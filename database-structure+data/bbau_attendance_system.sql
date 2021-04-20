@@ -645,6 +645,12 @@ ALTER TABLE `student_attendance`
 ALTER TABLE `teacher_attendance`
   ADD CONSTRAINT `fk_teacher` FOREIGN KEY (`teacher_id`) REFERENCES `teacher` (`teacher_id`);
 
+--
+-- Setting value for global variable
+--
+SET GLOBAL max_allowed_packet=20971520;
+SET GLOBAL event_scheduler = TRUE
+
 DELIMITER $$
 --
 -- Events
