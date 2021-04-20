@@ -568,8 +568,54 @@ INSERT INTO `user` (`email_id`, `password`, `user_id`, `role`) VALUES
 ('yesh@gmail.com', 'student', 25, 'student');
 
 --
+-- Table structure for table `leave_system`
+--
+
+CREATE TABLE `leave_system` (
+  `leave_id` int(11) NOT NULL,
+  `teacher_id` int(11) NOT NULL,
+  `student_id` int(11) NOT NULL,
+  `reason` varchar(150) NOT NULL,
+  `from_date` date NOT NULL,
+  `to_date` date NOT NULL,
+  `status` varchar(10) NOT NULL,
+  `remarks` varchar(100) NOT NULL,
+  `attachment_type` varchar(25) NOT NULL,
+  `attachment_data` mediumblob NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `leave_system`
+--
+ALTER TABLE `leave_system`
+  ADD PRIMARY KEY (`leave_id`),
+  ADD KEY `fk_leave_system_teacher` (`teacher_id`),
+  ADD KEY `fk_leave_system_student` (`student_id`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `leave_system`
+--
+ALTER TABLE `leave_system`
+  MODIFY `leave_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `leave_system`
+--
+ALTER TABLE `leave_system`
+  ADD CONSTRAINT `fk_leave_system_student` FOREIGN KEY (`student_id`) REFERENCES `student` (`student_id`),
+  ADD CONSTRAINT `fk_leave_system_teacher` FOREIGN KEY (`teacher_id`) REFERENCES `teacher` (`teacher_id`);
 
 --
 -- Indexes for table `admin`
@@ -616,8 +662,10 @@ ALTER TABLE `user`
   ADD UNIQUE KEY `unique_users` (`user_id`,`role`);
 
 --
--- Constraints for dumped tables
+-- Indexes for table `holiday_calendar`
 --
+ALTER TABLE `holiday_calendar`
+  ADD PRIMARY KEY (`date`);
 
 --
 -- Constraints for table `classroom`
