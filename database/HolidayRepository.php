@@ -4,7 +4,7 @@
     class HolidayRepository extends DBConnector {
 
         public function getAll(): array {
-            $result=mysqli_query($this->conn, "select * from holiday_calendar");
+            $result=mysqli_query($this->conn, "SELECT * FROM holiday_calendar");
             return Utils::convertDBRecordstoArray($result);
         }
         
