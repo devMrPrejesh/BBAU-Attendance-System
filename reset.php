@@ -1,5 +1,20 @@
-<?php include ('connect.php'); ?>
-<?php include ('utils.php'); ?>
+<?php
+    include ('utils.php');
+    include ('database/UserRepository.php');
+    
+    $user_reposistory = new UserRepository();
+    $response_msg;
+    if (isset($_POST['reset']) and $_POST['email'] != "") {
+        if ($user_reposistory->existById($_POST['email'])) {
+            $user_reposistory->updatePasswordByEmailId($_POST['email'], Utils::generatePassword());
+            //send password to mail
+            $response_msg = "<div>Your new password is send on mail.<br>Change your password immediately.</div>";
+        }
+        else {
+                $response_msg = "<div>Email ID not registered.<br>Contact Admin Department.</div>";
+        }
+    }
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -17,28 +32,6 @@
             <input type="submit" value="Reset" name="reset"/>
         </form>
         <br>
-      
-        <?php
-            if (isset($_POST['reset'])) {
-                $email_id = $_POST['email'];
-                $row = 0;
-                $query = mysqli_query($con, "select * from user where email_id = '$email_id'");
-                $row = mysqli_num_rows($query);
-
-                if ($row == 0) {
-        ?>
-            <div>Email ID not registered.<br>Contact Admin Department.</div>
-        <?php
-                }
-                else {
-                    $password = genratePassword();
-                    $query = mysqli_query($con, "UPDATE user SET password = '$password' WHERE email_id = '$email_id'");
-                    //send to mail
-        ?>
-            <div>Your new password is send on mail.<br>Change your password immediately.</div>
-        <?php
-                }
-            }
-        ?>
+        <?php if (isset($response_msg)) { echo $response_msg; } ?>
     </body>
 </html>

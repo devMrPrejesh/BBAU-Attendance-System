@@ -1,48 +1,31 @@
 <?php
+	include ('database/UserRepository.php');
+	include ('utils.php');
 
-if(isset($_POST['login'])){
-	try{
-		if(empty($_POST['username'])) throw new Exception("Username is required!");
-		if(empty($_POST['password'])) throw new Exception("Password is required!");
-
-		include ('connect.php');
-
-		$row=0;
-		$result=mysqli_query($con, "select user_id from user where email_id='$_POST[username]' and password='$_POST[password]' and role='$_POST[role]'");
-		$row=mysqli_num_rows($result);
-
-		if($row == 1) {
+	$user_repository = new UserRepository();
+	if(isset($_POST['login']) and $_POST['email_id'] != "" and $_POST['password'] != "" and $_POST['role'] != "") {
+		$user_id = $user_repository->findUserIdByEmailIdandPasswordandRole($_POST['email_id'], $_POST['password'], $_POST['role']);
+		if ($user_id == null) {
+			$error_msg = "Incorrect credentials.";
+		}
+		else {
 			session_start();
-			$_SESSION['user_id']=mysqli_fetch_row($result)[0];
+			$_SESSION['user_id'] = $user_id;
 			switch ($_POST["role"]) {
 				case "teacher":
 					$_SESSION['role']="teacher";
 					header('location: teacher/index.php');
-					break;
-				case "student":
-					$_SESSION['role']="student";
-					header('location: student/index.php');
 					break;
 				case "admin":
 					$_SESSION['role']="admin";
 					header('location: admin/index.php');
 					break;
 				default:
-					throw new Exception("Email ID, Password or Role is wrong, try again!");
-					session_destroy();
-					header('location: index.php');
+					$_SESSION['role']="student";
+					header('location: student/index.php');
 			}
 		}
-		else {
-			throw new Exception("Email ID, Password or Role is wrong, try again!");
-			header('location: index.php');
-		}
 	}
-	catch(Exception $e){
-		$error_msg=$e->getMessage();
-	}
-}
-
 ?>
 
 <!DOCTYPE html>
@@ -56,8 +39,8 @@ if(isset($_POST['login'])){
 		<?php if(isset($error_msg)) echo $error_msg; ?>
 
 		<form method="post">
-			<label for="username">Username</label>
-			<input type="text" name="username" id="username" placeholder="Enter Username"/>
+			<label for="email_id">E-mail ID</label>
+			<input type="text" name="email_id" id="email_id" placeholder="Enter E-mail ID"/>
 			<br>
 			<label for="password">Password</label>
 			<input type="password" name="password" id="password" placeholder="Enter Password"/>

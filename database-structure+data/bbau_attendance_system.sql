@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 27, 2021 at 01:57 PM
+-- Generation Time: Apr 17, 2021 at 07:40 AM
 -- Server version: 10.4.18-MariaDB
 -- PHP Version: 8.0.3
 
@@ -17,9 +17,59 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8mb4 */;
 
+DROP DATABASE IF EXISTS `bbau_attendance_system`;
+CREATE DATABASE `bbau_attendance_system`;
+USE `bbau_attendance_system`;
+
 --
 -- Database: `bbau_attendance_system`
 --
+
+DELIMITER $$
+--
+-- Procedures
+--
+CREATE DEFINER=`root`@`localhost` PROCEDURE `isHolidayonStudentAttendance` ()  BEGIN
+    DECLARE userId, periodSize, period, cursor_flag INT;
+    DECLARE cur1 CURSOR FOR  SELECT student_id, number_of_subjects FROM student;
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET cursor_flag = 1;
+    SET @recCount = (SELECT COUNT(*) FROM holiday_calendar WHERE date=CURRENT_DATE());
+    If @recCount > 0 THEN
+    	OPEN cur1;
+        	FETCH cur1 INTO userId, periodSize;
+            REPEAT
+                SET period = 0;
+                WHILE period < periodSize DO
+                	SET period = period + 1;
+        			INSERT INTO student_attendance VALUES (userId, 'HOLIDAY', 'holiday', CURRENT_DATE(), period);
+                END WHILE;
+                FETCH cur1 INTO userId, periodSize;
+        	UNTIL cursor_flag = 1 END REPEAT;
+        CLOSE cur1;
+    END IF;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `isHolidayonTeacherAttendance` ()  BEGIN
+    DECLARE userId, periodSize, period, cursor_flag INT;
+    DECLARE cur1 CURSOR FOR  SELECT teacher_id, number_of_classes FROM teacher;
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET cursor_flag = 1;
+    SET @recCount = (SELECT COUNT(*) FROM holiday_calendar WHERE date=CURRENT_DATE());
+    If @recCount > 0 THEN
+    	OPEN cur1;
+        	FETCH cur1 INTO userId, periodSize;
+            REPEAT
+                SET period = 0;
+                WHILE period < periodSize DO
+                	SET period = period + 1;
+        			INSERT INTO teacher_attendance VALUES (userId, 'HOLIDAY', 'holiday', CURRENT_DATE(), period);
+                END WHILE;
+                FETCH cur1 INTO userId, periodSize;
+        	UNTIL cursor_flag = 1 END REPEAT;
+        CLOSE cur1;
+    END IF;
+END$$
+
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -49,141 +99,160 @@ INSERT INTO `admin` (`admin_id`, `admin_name`, `superior`) VALUES
 
 CREATE TABLE `classroom` (
   `teacher_id` int(11) NOT NULL,
-  `student_id` int(11) NOT NULL,
-  `subject` varchar(30) NOT NULL,
-  `class` varchar(20) NOT NULL
+  `class` varchar(20) NOT NULL,
+  `day` int(11) NOT NULL,
+  `period` int(11) NOT NULL,
+  `subject` varchar(30) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `classroom`
 --
 
-INSERT INTO `classroom` (`teacher_id`, `student_id`, `subject`, `class`) VALUES
-(1, 1, 'ADA', 'CSE-A'),
-(1, 2, 'ADA', 'CSE-B'),
-(1, 3, 'ADA', 'CSE-B'),
-(1, 4, 'ADA', 'ECE-A'),
-(1, 5, 'ADA', 'ECE-A'),
-(1, 6, 'TOC', 'SE-A'),
-(1, 7, 'ADA', 'CSE-B'),
-(1, 8, 'ADA', 'CSE-A'),
-(1, 9, 'ADA', 'CSE-A'),
-(1, 10, 'TOC', 'SE-A'),
-(1, 11, 'TOC', 'MCA-A'),
-(1, 12, 'ADA', 'CSE-A'),
-(1, 13, 'TOC', 'SE-A'),
-(1, 14, 'ADA', 'ECE-A'),
-(1, 15, 'ADA', 'ECE-A'),
-(1, 16, 'ADA', 'CSE-A'),
-(1, 17, 'TOC', 'MCA-A'),
-(1, 18, 'ADA', 'ECE-A'),
-(1, 19, 'TOC', 'MCA-A'),
-(1, 20, 'TOC', 'MCA-A'),
-(1, 21, 'ADA', 'CSE-B'),
-(1, 22, 'TOC', 'SE-A'),
-(1, 23, 'TOC', 'MCA-A'),
-(1, 24, 'TOC', 'SE-A'),
-(1, 25, 'ADA', 'CSE-B'),
-(2, 1, 'TOC', 'CSE-A'),
-(2, 2, 'TOC', 'CSE-B'),
-(2, 3, 'TOC', 'CSE-B'),
-(2, 4, 'TOC', 'ECE-A'),
-(2, 5, 'TOC', 'ECE-A'),
-(2, 6, 'ADA', 'SE-A'),
-(2, 7, 'TOC', 'CSE-B'),
-(2, 8, 'TOC', 'CSE-A'),
-(2, 9, 'TOC', 'CSE-A'),
-(2, 10, 'ADA', 'SE-A'),
-(2, 11, 'ADA', 'MCA-A'),
-(2, 12, 'TOC', 'CSE-A'),
-(2, 13, 'ADA', 'SE-A'),
-(2, 14, 'TOC', 'ECE-A'),
-(2, 15, 'TOC', 'ECE-A'),
-(2, 16, 'TOC', 'CSE-A'),
-(2, 17, 'ADA', 'MCA-A'),
-(2, 18, 'TOC', 'ECE-A'),
-(2, 19, 'ADA', 'MCA-A'),
-(2, 20, 'ADA', 'MCA-A'),
-(2, 21, 'TOC', 'CSE-B'),
-(2, 22, 'ADA', 'SE-A'),
-(2, 23, 'ADA', 'MCA-A'),
-(2, 24, 'ADA', 'SE-A'),
-(2, 25, 'TOC', 'CSE-B'),
-(3, 1, 'OOPS', 'CSE-A'),
-(3, 2, 'OOPS', 'CSE-B'),
-(3, 3, 'OOPS', 'CSE-B'),
-(3, 4, 'OOPS', 'ECE-A'),
-(3, 5, 'OOPS', 'ECE-A'),
-(3, 6, 'OOPS', 'SE-A'),
-(3, 7, 'OOPS', 'CSE-B'),
-(3, 8, 'OOPS', 'CSE-A'),
-(3, 9, 'OOPS', 'CSE-A'),
-(3, 10, 'OOPS', 'SE-A'),
-(3, 11, 'OOPS', 'MCA-A'),
-(3, 12, 'OOPS', 'CSE-A'),
-(3, 13, 'OOPS', 'SE-A'),
-(3, 14, 'OOPS', 'ECE-A'),
-(3, 15, 'OOPS', 'ECE-A'),
-(3, 16, 'OOPS', 'CSE-A'),
-(3, 17, 'OOPS', 'MCA-A'),
-(3, 18, 'OOPS', 'ECE-A'),
-(3, 19, 'OOPS', 'MCA-A'),
-(3, 20, 'OOPS', 'MCA-A'),
-(3, 21, 'OOPS', 'CSE-B'),
-(3, 22, 'OOPS', 'SE-A'),
-(3, 23, 'OOPS', 'MCA-A'),
-(3, 24, 'OOPS', 'SE-A'),
-(3, 25, 'OOPS', 'CSE-B'),
-(4, 1, 'ET', 'CSE-A'),
-(4, 2, 'ET', 'CSE-B'),
-(4, 3, 'ET', 'CSE-B'),
-(4, 4, 'ET', 'ECE-A'),
-(4, 5, 'ET', 'ECE-A'),
-(4, 6, 'ET', 'SE-A'),
-(4, 7, 'ET', 'CSE-B'),
-(4, 8, 'ET', 'CSE-A'),
-(4, 9, 'ET', 'CSE-A'),
-(4, 10, 'ET', 'SE-A'),
-(4, 11, 'ET', 'MCA-A'),
-(4, 12, 'ET', 'CSE-A'),
-(4, 13, 'ET', 'SE-A'),
-(4, 14, 'ET', 'ECE-A'),
-(4, 15, 'ET', 'ECE-A'),
-(4, 16, 'ET', 'CSE-A'),
-(4, 17, 'ET', 'MCA-A'),
-(4, 18, 'ET', 'ECE-A'),
-(4, 19, 'ET', 'MCA-A'),
-(4, 20, 'ET', 'MCA-A'),
-(4, 21, 'ET', 'CSE-B'),
-(4, 22, 'ET', 'SE-A'),
-(4, 23, 'ET', 'MCA-A'),
-(4, 24, 'ET', 'SE-A'),
-(4, 25, 'ET', 'CSE-B'),
-(5, 1, 'OOSE', 'CSE-A'),
-(5, 2, 'OOSE', 'CSE-B'),
-(5, 3, 'OOSE', 'CSE-B'),
-(5, 4, 'OOSE', 'ECE-A'),
-(5, 5, 'OOSE', 'ECE-A'),
-(5, 6, 'OOSE', 'SE-A'),
-(5, 7, 'OOSE', 'CSE-B'),
-(5, 8, 'OOSE', 'CSE-A'),
-(5, 9, 'OOSE', 'CSE-A'),
-(5, 10, 'OOSE', 'SE-A'),
-(5, 11, 'OOSE', 'MCA-A'),
-(5, 12, 'OOSE', 'CSE-A'),
-(5, 13, 'OOSE', 'SE-A'),
-(5, 14, 'OOSE', 'ECE-A'),
-(5, 15, 'OOSE', 'ECE-A'),
-(5, 16, 'OOSE', 'CSE-A'),
-(5, 17, 'OOSE', 'MCA-A'),
-(5, 18, 'OOSE', 'ECE-A'),
-(5, 19, 'OOSE', 'MCA-A'),
-(5, 20, 'OOSE', 'MCA-A'),
-(5, 21, 'OOSE', 'CSE-B'),
-(5, 22, 'OOSE', 'SE-A'),
-(5, 23, 'OOSE', 'MCA-A'),
-(5, 24, 'OOSE', 'SE-A'),
-(5, 25, 'OOSE', 'CSE-B');
+INSERT INTO `classroom` (`teacher_id`, `class`, `day`, `period`, `subject`) VALUES
+(1, 'CSE-A', 0, 3, 'ADA'),
+(1, 'CSE-A', 1, 3, 'ADA'),
+(1, 'CSE-A', 2, 3, 'ADA'),
+(1, 'CSE-A', 3, 3, 'ADA'),
+(1, 'CSE-A', 4, 3, 'ADA'),
+(1, 'CSE-B', 0, 1, 'ADA'),
+(1, 'CSE-B', 1, 1, 'ADA'),
+(1, 'CSE-B', 2, 1, 'ADA'),
+(1, 'CSE-B', 3, 1, 'ADA'),
+(1, 'CSE-B', 4, 1, 'ADA'),
+(1, 'ECE-A', 0, 5, 'ADA'),
+(1, 'ECE-A', 1, 5, 'ADA'),
+(1, 'ECE-A', 2, 5, 'ADA'),
+(1, 'ECE-A', 3, 5, 'ADA'),
+(1, 'ECE-A', 4, 5, 'ADA'),
+(1, 'MCA-A', 0, 2, 'TOC'),
+(1, 'MCA-A', 1, 2, 'TOC'),
+(1, 'MCA-A', 2, 2, 'TOC'),
+(1, 'MCA-A', 3, 2, 'TOC'),
+(1, 'MCA-A', 4, 2, 'TOC'),
+(1, 'SE-A', 0, 4, 'TOC'),
+(1, 'SE-A', 1, 4, 'TOC'),
+(1, 'SE-A', 2, 4, 'TOC'),
+(1, 'SE-A', 3, 4, 'TOC'),
+(1, 'SE-A', 4, 4, 'TOC'),
+(2, 'CSE-A', 0, 5, 'TOC'),
+(2, 'CSE-A', 1, 5, 'TOC'),
+(2, 'CSE-A', 2, 5, 'TOC'),
+(2, 'CSE-A', 3, 5, 'TOC'),
+(2, 'CSE-A', 4, 5, 'TOC'),
+(2, 'CSE-B', 0, 3, 'TOC'),
+(2, 'CSE-B', 1, 3, 'TOC'),
+(2, 'CSE-B', 2, 3, 'TOC'),
+(2, 'CSE-B', 3, 3, 'TOC'),
+(2, 'CSE-B', 4, 3, 'TOC'),
+(2, 'ECE-A', 0, 1, 'TOC'),
+(2, 'ECE-A', 1, 1, 'TOC'),
+(2, 'ECE-A', 2, 1, 'TOC'),
+(2, 'ECE-A', 3, 1, 'TOC'),
+(2, 'ECE-A', 4, 1, 'TOC'),
+(2, 'MCA-A', 0, 4, 'ADA'),
+(2, 'MCA-A', 1, 4, 'ADA'),
+(2, 'MCA-A', 2, 4, 'ADA'),
+(2, 'MCA-A', 3, 4, 'ADA'),
+(2, 'MCA-A', 4, 4, 'ADA'),
+(2, 'SE-A', 0, 2, 'ADA'),
+(2, 'SE-A', 1, 2, 'ADA'),
+(2, 'SE-A', 2, 2, 'ADA'),
+(2, 'SE-A', 3, 2, 'ADA'),
+(2, 'SE-A', 4, 2, 'ADA'),
+(3, 'CSE-A', 0, 1, 'OOPS'),
+(3, 'CSE-A', 1, 1, 'OOPS'),
+(3, 'CSE-A', 2, 1, 'OOPS'),
+(3, 'CSE-A', 3, 1, 'OOPS'),
+(3, 'CSE-A', 4, 1, 'OOPS'),
+(3, 'CSE-B', 0, 4, 'OOPS'),
+(3, 'CSE-B', 1, 4, 'OOPS'),
+(3, 'CSE-B', 2, 4, 'OOPS'),
+(3, 'CSE-B', 3, 4, 'OOPS'),
+(3, 'CSE-B', 4, 4, 'OOPS'),
+(3, 'ECE-A', 0, 2, 'OOPS'),
+(3, 'ECE-A', 1, 2, 'OOPS'),
+(3, 'ECE-A', 2, 2, 'OOPS'),
+(3, 'ECE-A', 3, 2, 'OOPS'),
+(3, 'ECE-A', 4, 2, 'OOPS'),
+(3, 'MCA-A', 0, 5, 'OOPS'),
+(3, 'MCA-A', 1, 5, 'OOPS'),
+(3, 'MCA-A', 2, 5, 'OOPS'),
+(3, 'MCA-A', 3, 5, 'OOPS'),
+(3, 'MCA-A', 4, 5, 'OOPS'),
+(3, 'SE-A', 0, 3, 'OOPS'),
+(3, 'SE-A', 1, 3, 'OOPS'),
+(3, 'SE-A', 2, 3, 'OOPS'),
+(3, 'SE-A', 3, 3, 'OOPS'),
+(3, 'SE-A', 4, 3, 'OOPS'),
+(4, 'CSE-A', 0, 4, 'ET'),
+(4, 'CSE-A', 1, 4, 'ET'),
+(4, 'CSE-A', 2, 4, 'ET'),
+(4, 'CSE-A', 3, 4, 'ET'),
+(4, 'CSE-A', 4, 4, 'ET'),
+(4, 'CSE-B', 0, 2, 'ET'),
+(4, 'CSE-B', 1, 2, 'ET'),
+(4, 'CSE-B', 2, 2, 'ET'),
+(4, 'CSE-B', 3, 2, 'ET'),
+(4, 'CSE-B', 4, 2, 'ET'),
+(4, 'ECE-A', 0, 3, 'ET'),
+(4, 'ECE-A', 1, 3, 'ET'),
+(4, 'ECE-A', 2, 3, 'ET'),
+(4, 'ECE-A', 3, 3, 'ET'),
+(4, 'ECE-A', 4, 3, 'ET'),
+(4, 'MCA-A', 0, 1, 'ET'),
+(4, 'MCA-A', 1, 1, 'ET'),
+(4, 'MCA-A', 2, 1, 'ET'),
+(4, 'MCA-A', 3, 1, 'ET'),
+(4, 'MCA-A', 4, 1, 'ET'),
+(4, 'SE-A', 0, 5, 'ET'),
+(4, 'SE-A', 1, 5, 'ET'),
+(4, 'SE-A', 2, 5, 'ET'),
+(4, 'SE-A', 3, 5, 'ET'),
+(4, 'SE-A', 4, 5, 'ET'),
+(5, 'CSE-A', 0, 2, 'OOSE'),
+(5, 'CSE-A', 1, 2, 'OOSE'),
+(5, 'CSE-A', 2, 2, 'OOSE'),
+(5, 'CSE-A', 3, 2, 'OOSE'),
+(5, 'CSE-A', 4, 2, 'OOSE'),
+(5, 'CSE-B', 0, 5, 'OOSE'),
+(5, 'CSE-B', 1, 5, 'OOSE'),
+(5, 'CSE-B', 2, 5, 'OOSE'),
+(5, 'CSE-B', 3, 5, 'OOSE'),
+(5, 'CSE-B', 4, 5, 'OOSE'),
+(5, 'ECE-A', 0, 4, 'OOSE'),
+(5, 'ECE-A', 1, 4, 'OOSE'),
+(5, 'ECE-A', 2, 4, 'OOSE'),
+(5, 'ECE-A', 3, 4, 'OOSE'),
+(5, 'ECE-A', 4, 4, 'OOSE'),
+(5, 'MCA-A', 0, 3, 'OOSE'),
+(5, 'MCA-A', 1, 3, 'OOSE'),
+(5, 'MCA-A', 2, 3, 'OOSE'),
+(5, 'MCA-A', 3, 3, 'OOSE'),
+(5, 'MCA-A', 4, 3, 'OOSE'),
+(5, 'SE-A', 0, 1, 'OOSE'),
+(5, 'SE-A', 1, 1, 'OOSE'),
+(5, 'SE-A', 2, 1, 'OOSE'),
+(5, 'SE-A', 3, 1, 'OOSE'),
+(5, 'SE-A', 4, 1, 'OOSE');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `holiday_calendar`
+--
+
+CREATE TABLE `holiday_calendar` (
+  `date` date NOT NULL,
+  `title` varchar(30) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `holiday_calendar`
+--
+
+INSERT INTO `holiday_calendar` (`date`, `title`) VALUES
+('2021-04-13', 'Test');
 
 -- --------------------------------------------------------
 
@@ -197,6 +266,7 @@ CREATE TABLE `student` (
   `department` varchar(20) NOT NULL,
   `batch` int(11) NOT NULL,
   `semester` int(11) NOT NULL,
+  `class` varchar(20) NOT NULL,
   `number_of_subjects` int(11) NOT NULL,
   `teacher_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -205,32 +275,32 @@ CREATE TABLE `student` (
 -- Dumping data for table `student`
 --
 
-INSERT INTO `student` (`student_id`, `student_name`, `department`, `batch`, `semester`, `number_of_subjects`, `teacher_id`) VALUES
-(1, 'Prejesh', 'CSE', 2021, 1, 5, 1),
-(2, 'Pravesh Rawat', 'CSE', 2021, 1, 5, 2),
-(3, 'Ravi ', 'CSE', 2021, 1, 5, 2),
-(4, 'Vibhu', 'ECE', 2021, 1, 5, 4),
-(5, 'Jiya', 'ECE', 2021, 1, 5, 4),
-(6, 'Sonal', 'SE', 2021, 1, 5, 5),
-(7, 'Priya', 'CSE', 2021, 1, 5, 2),
-(8, 'Ankit', 'CSE', 2021, 1, 5, 1),
-(9, 'Rehan', 'CSE', 2021, 1, 5, 1),
-(10, 'Anisha', 'SE', 2021, 1, 5, 5),
-(11, 'Divya', 'MCA', 2021, 1, 5, 3),
-(12, 'Ronam', 'CSE', 2021, 1, 5, 1),
-(13, 'Harjot', 'SE', 2021, 1, 5, 5),
-(14, 'Hrini', 'ECE', 2021, 1, 5, 4),
-(15, 'Rahul', 'ECE', 2021, 1, 5, 4),
-(16, 'Hiya', 'CSE', 2021, 1, 5, 1),
-(17, 'Rachna', 'MCA', 2021, 1, 5, 3),
-(18, 'Shivam', 'ECE', 2021, 1, 5, 4),
-(19, 'Rohanika', 'MCA', 2021, 1, 5, 3),
-(20, 'Sarita', 'MCA', 2021, 1, 5, 3),
-(21, 'Puranima', 'CSE', 2021, 1, 5, 2),
-(22, 'Pihu', 'SE', 2021, 1, 5, 5),
-(23, 'Soni', 'MCA', 2021, 1, 5, 3),
-(24, 'Suman', 'SE', 2021, 1, 5, 5),
-(25, 'Yesh', 'CSE', 2021, 1, 5, 2);
+INSERT INTO `student` (`student_id`, `student_name`, `department`, `batch`, `semester`, `class`, `number_of_subjects`, `teacher_id`) VALUES
+(1, 'Prejesh Pal', 'CSE', 2021, 1, 'CSE-A', 5, 1),
+(2, 'Pravesh Rawat', 'CSE', 2021, 1, 'CSE-B', 5, 2),
+(3, 'Ravi ', 'CSE', 2021, 1, 'CSE-B', 5, 2),
+(4, 'Vibhu', 'ECE', 2021, 1, 'ECE-A', 5, 4),
+(5, 'Jiya', 'ECE', 2021, 1, 'ECE-A', 5, 4),
+(6, 'Sonal', 'SE', 2021, 1, 'SE-A', 5, 5),
+(7, 'Priya', 'CSE', 2021, 1, 'CSE-B', 5, 2),
+(8, 'Ankit', 'CSE', 2021, 1, 'CSE-A', 5, 1),
+(9, 'Rehan', 'CSE', 2021, 1, 'CSE-A', 5, 1),
+(10, 'Anisha', 'SE', 2021, 1, 'SE-A', 5, 5),
+(11, 'Divya', 'MCA', 2021, 1, 'MCA-A', 5, 3),
+(12, 'Ronam', 'CSE', 2021, 1, 'CSE-A', 5, 1),
+(13, 'Harjot', 'SE', 2021, 1, 'SE-A', 5, 5),
+(14, 'Hrini', 'ECE', 2021, 1, 'ECE-A', 5, 4),
+(15, 'Rahul', 'ECE', 2021, 1, 'ECE-A', 5, 4),
+(16, 'Hiya', 'CSE', 2021, 1, 'CSE-A', 5, 1),
+(17, 'Rachna', 'MCA', 2021, 1, 'MCA-A', 5, 3),
+(18, 'Shivam', 'ECE', 2021, 1, 'ECE-A', 5, 4),
+(19, 'Rohanika', 'MCA', 2021, 1, 'MCA-A', 5, 3),
+(20, 'Sarita', 'MCA', 2021, 1, 'MCA-A', 5, 3),
+(21, 'Puranima', 'CSE', 2021, 1, 'CSE-B', 5, 2),
+(22, 'Pihu', 'SE', 2021, 1, 'SE-A', 5, 5),
+(23, 'Soni', 'MCA', 2021, 1, 'MCA-A', 5, 3),
+(24, 'Suman', 'SE', 2021, 1, 'SE-A', 5, 5),
+(25, 'Yesh', 'CSE', 2021, 1, 'CSE-B', 5, 2);
 
 -- --------------------------------------------------------
 
@@ -511,8 +581,7 @@ ALTER TABLE `admin`
 -- Indexes for table `classroom`
 --
 ALTER TABLE `classroom`
-  ADD PRIMARY KEY (`teacher_id`,`student_id`),
-  ADD KEY `fk_class_student` (`student_id`);
+  ADD PRIMARY KEY (`teacher_id`,`class`,`day`);
 
 --
 -- Indexes for table `student`
@@ -554,8 +623,9 @@ ALTER TABLE `user`
 -- Constraints for table `classroom`
 --
 ALTER TABLE `classroom`
-  ADD CONSTRAINT `fk_class_student` FOREIGN KEY (`student_id`) REFERENCES `student` (`student_id`),
-  ADD CONSTRAINT `fk_class_teacher` FOREIGN KEY (`teacher_id`) REFERENCES `teacher` (`teacher_id`);
+  ADD CONSTRAINT `classroom_ibfk_1` FOREIGN KEY (`teacher_id`) REFERENCES `teacher` (`teacher_id`),
+  ADD CONSTRAINT `fk_class_teacher` FOREIGN KEY (`teacher_id`) REFERENCES `teacher` (`teacher_id`),
+  ADD CONSTRAINT `fk_teacher_teacher_id` FOREIGN KEY (`teacher_id`) REFERENCES `teacher` (`teacher_id`);
 
 --
 -- Constraints for table `student`
@@ -574,6 +644,16 @@ ALTER TABLE `student_attendance`
 --
 ALTER TABLE `teacher_attendance`
   ADD CONSTRAINT `fk_teacher` FOREIGN KEY (`teacher_id`) REFERENCES `teacher` (`teacher_id`);
+
+DELIMITER $$
+--
+-- Events
+--
+CREATE DEFINER=`root`@`localhost` EVENT `performHolidayCheckStudent` ON SCHEDULE EVERY 1 DAY STARTS '2021-04-14 00:00:00' ON COMPLETION NOT PRESERVE ENABLE DO CALL isHolidayonStudentAttendance()$$
+
+CREATE DEFINER=`root`@`localhost` EVENT `performHolidayCheckTeacher` ON SCHEDULE EVERY 1 DAY STARTS '2021-04-14 00:00:00' ON COMPLETION NOT PRESERVE ENABLE DO CALL isHolidayonTeacherAttendance()$$
+
+DELIMITER ;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
