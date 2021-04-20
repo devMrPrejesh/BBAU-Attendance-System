@@ -35,6 +35,52 @@ INSERT INTO `admin` (`admin_id`, `admin_name`, `superior`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Dumping data for table `teacher`
+--
+
+INSERT INTO `teacher` (`teacher_id`, `teacher_name`, `department`, `number_of_classes`) VALUES
+(1, 'Sumit Bangar', 'CSE', 5),
+(2, 'Simi Pandey', 'CSE', 5),
+(3, 'Anuj Giri', 'MCA', 5),
+(4, 'Sooraj Yadav', 'ECE', 5),
+(5, 'Mohit Gaur', 'SE', 5);
+
+-- --------------------------------------------------------
+
+--
+-- Dumping data for table `student`
+--
+
+INSERT INTO `student` (`student_id`, `student_name`, `department`, `batch`, `semester`, `class`, `number_of_subjects`, `teacher_id`) VALUES
+(1, 'Prejesh Pal', 'CSE', 2021, 1, 'CSE-A', 5, 1),
+(2, 'Pravesh Rawat', 'CSE', 2021, 1, 'CSE-B', 5, 2),
+(3, 'Ravi ', 'CSE', 2021, 1, 'CSE-B', 5, 2),
+(4, 'Vibhu', 'ECE', 2021, 1, 'ECE-A', 5, 4),
+(5, 'Jiya', 'ECE', 2021, 1, 'ECE-A', 5, 4),
+(6, 'Sonal', 'SE', 2021, 1, 'SE-A', 5, 5),
+(7, 'Priya', 'CSE', 2021, 1, 'CSE-B', 5, 2),
+(8, 'Ankit', 'CSE', 2021, 1, 'CSE-A', 5, 1),
+(9, 'Rehan', 'CSE', 2021, 1, 'CSE-A', 5, 1),
+(10, 'Anisha', 'SE', 2021, 1, 'SE-A', 5, 5),
+(11, 'Divya', 'MCA', 2021, 1, 'MCA-A', 5, 3),
+(12, 'Ronam', 'CSE', 2021, 1, 'CSE-A', 5, 1),
+(13, 'Harjot', 'SE', 2021, 1, 'SE-A', 5, 5),
+(14, 'Hrini', 'ECE', 2021, 1, 'ECE-A', 5, 4),
+(15, 'Rahul', 'ECE', 2021, 1, 'ECE-A', 5, 4),
+(16, 'Hiya', 'CSE', 2021, 1, 'CSE-A', 5, 1),
+(17, 'Rachna', 'MCA', 2021, 1, 'MCA-A', 5, 3),
+(18, 'Shivam', 'ECE', 2021, 1, 'ECE-A', 5, 4),
+(19, 'Rohanika', 'MCA', 2021, 1, 'MCA-A', 5, 3),
+(20, 'Sarita', 'MCA', 2021, 1, 'MCA-A', 5, 3),
+(21, 'Puranima', 'CSE', 2021, 1, 'CSE-B', 5, 2),
+(22, 'Pihu', 'SE', 2021, 1, 'SE-A', 5, 5),
+(23, 'Soni', 'MCA', 2021, 1, 'MCA-A', 5, 3),
+(24, 'Suman', 'SE', 2021, 1, 'SE-A', 5, 5),
+(25, 'Yesh', 'CSE', 2021, 1, 'CSE-B', 5, 2);
+
+-- --------------------------------------------------------
+
+--
 -- Dumping data for table `classroom`
 --
 
@@ -177,39 +223,6 @@ INSERT INTO `holiday_calendar` (`date`, `title`) VALUES
 -- --------------------------------------------------------
 
 --
--- Dumping data for table `student`
---
-
-INSERT INTO `student` (`student_id`, `student_name`, `department`, `batch`, `semester`, `class`, `number_of_subjects`, `teacher_id`) VALUES
-(1, 'Prejesh Pal', 'CSE', 2021, 1, 'CSE-A', 5, 1),
-(2, 'Pravesh Rawat', 'CSE', 2021, 1, 'CSE-B', 5, 2),
-(3, 'Ravi ', 'CSE', 2021, 1, 'CSE-B', 5, 2),
-(4, 'Vibhu', 'ECE', 2021, 1, 'ECE-A', 5, 4),
-(5, 'Jiya', 'ECE', 2021, 1, 'ECE-A', 5, 4),
-(6, 'Sonal', 'SE', 2021, 1, 'SE-A', 5, 5),
-(7, 'Priya', 'CSE', 2021, 1, 'CSE-B', 5, 2),
-(8, 'Ankit', 'CSE', 2021, 1, 'CSE-A', 5, 1),
-(9, 'Rehan', 'CSE', 2021, 1, 'CSE-A', 5, 1),
-(10, 'Anisha', 'SE', 2021, 1, 'SE-A', 5, 5),
-(11, 'Divya', 'MCA', 2021, 1, 'MCA-A', 5, 3),
-(12, 'Ronam', 'CSE', 2021, 1, 'CSE-A', 5, 1),
-(13, 'Harjot', 'SE', 2021, 1, 'SE-A', 5, 5),
-(14, 'Hrini', 'ECE', 2021, 1, 'ECE-A', 5, 4),
-(15, 'Rahul', 'ECE', 2021, 1, 'ECE-A', 5, 4),
-(16, 'Hiya', 'CSE', 2021, 1, 'CSE-A', 5, 1),
-(17, 'Rachna', 'MCA', 2021, 1, 'MCA-A', 5, 3),
-(18, 'Shivam', 'ECE', 2021, 1, 'ECE-A', 5, 4),
-(19, 'Rohanika', 'MCA', 2021, 1, 'MCA-A', 5, 3),
-(20, 'Sarita', 'MCA', 2021, 1, 'MCA-A', 5, 3),
-(21, 'Puranima', 'CSE', 2021, 1, 'CSE-B', 5, 2),
-(22, 'Pihu', 'SE', 2021, 1, 'SE-A', 5, 5),
-(23, 'Soni', 'MCA', 2021, 1, 'MCA-A', 5, 3),
-(24, 'Suman', 'SE', 2021, 1, 'SE-A', 5, 5),
-(25, 'Yesh', 'CSE', 2021, 1, 'CSE-B', 5, 2);
-
--- --------------------------------------------------------
-
---
 -- Dumping data for table `student_attendance`
 --
 
@@ -339,19 +352,6 @@ INSERT INTO `student_attendance` (`student_id`, `subject`, `status`, `date`, `pe
 (25, 'TOC', 'present', '2021-03-25', 3),
 (25, 'OOPS', 'absent', '2021-03-25', 4),
 (25, 'OOSE', 'absent', '2021-03-25', 5);
-
--- --------------------------------------------------------
-
---
--- Dumping data for table `teacher`
---
-
-INSERT INTO `teacher` (`teacher_id`, `teacher_name`, `department`, `number_of_classes`) VALUES
-(1, 'Sumit Bangar', 'CSE', 5),
-(2, 'Simi Pandey', 'CSE', 5),
-(3, 'Anuj Giri', 'MCA', 5),
-(4, 'Sooraj Yadav', 'ECE', 5),
-(5, 'Mohit Gaur', 'SE', 5);
 
 -- --------------------------------------------------------
 
