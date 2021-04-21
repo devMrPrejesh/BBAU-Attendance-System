@@ -7,7 +7,7 @@
 
     $student_repository = new StudentRepository();
     $student_id = $_SESSION['user_id'];
-    $period_size = $student_repository->findPeriodSizeById($student_id);
+    $period_size = $student_repository->findByID($student_id)['number_of_subjects'];
     $records = $student_repository->findAttendanceByIdOrderByDateandPeriod($student_id);
     $timetable = $student_repository->findClassRoomByIdOrderByDayandPeriod($student_id);
     $subject_info = $student_repository->findSubjectandTeacherNameById($student_id);
@@ -25,7 +25,7 @@
     </head>
     <body>
         <h1>Student Dashboard</h1>
-        <h3>Hi <?php echo explode(" ", $student_repository->findNameById($student_id))[0]; ?></h3>
+        <h3>Hi <?php echo explode(" ", $_SESSION['user_name'])[0]; ?></h3>
         <a href="index.php">Home</a>
         <a href="leave.php">Apply Leave</a>
         <a href="../holiday.php">Holiday</a>

@@ -18,7 +18,7 @@
     </head>
     <body>
         <h1>Change Password</h1>
-        <h3>Hi <?php echo explode(" ", $student_repository->findNameById($student_id))[0]; ?></h3>
+        <h3>Hi <?php echo explode(" ", $_SESSION['user_name'])[0]; ?></h3>
         <a href="index.php">Home</a>
         <a href="leave.php">Apply Leave</a>
         <a href="../holiday.php">Holiday</a>

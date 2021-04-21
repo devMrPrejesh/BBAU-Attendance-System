@@ -10,7 +10,7 @@
     $user_repository = new UserRepository();
     $student_id = $_SESSION['user_id'];
     $email_id =$user_repository->findIdByUserIdAndRole($student_id, $_SESSION['role']);
-    $acoount_details = $student_repository->findAllByID($student_id);
+    $acoount_details = $student_repository->findByID($student_id);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -19,7 +19,7 @@
     </head>
     <body>
         <h1>Account Details</h1>
-        <h3>Hi <?php echo explode(" ", $student_repository->findNameById($student_id))[0]; ?></h3>
+        <h3>Hi <?php echo explode(" ", $_SESSION['user_name'])[0]; ?></h3>
         <a href="index.php">Home</a>
         <a href="leave.php">Apply Leave</a>
         <a href="../holiday.php">Holiday</a>

@@ -2,28 +2,55 @@
     ob_start();
     session_start();
     if($_SESSION['role']!='teacher') header('location: ../index.php');
-    include ('../connect.php');
+    include ('../database/TeacherRepository.php');
+    include ('../database/StudentRepository.php');
+    include ('../utils.php');
+
+    $student_repository = new StudentRepository();
+    $teacher_repository = new TeacherRepository();
+    $teacher_id = $_SESSION['user_id'];
+    $cur_date = date("Y-m-d");
+    $day = date("N");
+    $period_size = $teacher_repository->findByID($teacher_id)['number_of_classes'];
+
+    function attendanceData(array $students, int $period, string $subject): void {
+        $student_list = array();
+        echo '<form method="post">';
+        foreach ($students as $student) {
+            $student_id = $student['student_id'];
+            $student_name = $student['student_name'];
+            array_push($student_list, $student_id);
+            echo "<label for='$student_id'>$student_id $student_name</label>";
+            echo "<input type='checkbox' id='$student_id' name='$student_id'><br>";
+        }
+        echo "<input type='hidden' name='students' value='".serialize($student_list)."'>";
+        echo "<input type='hidden' name='period' value='$period'>";
+        echo "<input type='hidden' name='subject' value='$subject'>";
+        echo '<input type="submit" value="Submit" name="submitted"/></form>';
+        echo "</form>";
+    }
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>Attendance</title>
+        <title>Student Attendance</title>
     </head>
     <body>
         <h1>Student Attendance</h1>
+        <h3>Hi <?php echo explode(" ", $_SESSION['user_name'])[0]; ?></h3>
         <a href="index.php">Home</a>
+        <a href="leave.php">Approve Leave</a>
+        <a href="../holiday.php">Holiday</a>
         <a href="students.php">Students</a>
+        <a href="attendance.php">Attendance</a>
         <a href="report.php">Report</a>
-        <a href="account.php">Acoount</a>
-        <a href="password.php">Password</a>
+        <a href="account.php">Account</a>
+        <a href="password.php">Change Password</a>
         <a href="../logout.php">Logout</a>
         <form method="post">
             <?php
-                $teacher_id = $_SESSION['user_id'];
-                $student_count = null;
-                $period_size = mysqli_fetch_row(mysqli_query($con, "select number_of_classes from teacher where teacher_id='$teacher_id'"))[0];
-                $classroom = mysqli_query($con, "select DISTINCT class from classroom where teacher_id='$teacher_id'");
+               
             ?>
             <label for="period">Period</label>
             <select id="period" name="period">
@@ -34,53 +61,49 @@
                 }
             ?>
             </select>
-            
-            <label for="class_section">Class & Section</label>
-            <select id="class_section" name="class">
-                <option value=''>--select--</option>
-            <?php
-                 while ($row = mysqli_fetch_array($classroom)) {
-                    $class = $row["class"];
-                    echo "<option value='$class'>$class</option>";
-                }
-            ?>
             <input type="submit" value="Show" name="show"/>
         </form>
         <br>
         <?php
-            if(isset($_POST['show']) and  $_POST['period'] != '' and  $_POST['class'] != '') {
-                $class = $_POST['class'];
-                $student_ids = array();
-                $students = mysqli_query($con, "SELECT DISTINCT s.student_id, s.student_name, c.subject FROM classroom c INNER join student s ON c.student_id=s.student_id WHERE c.teacher_id = '$teacher_id' AND class = '$class'");
-                $_SESSION['period'] = $_POST['period'];
-                echo '<form method="post">';
-                while ($row = mysqli_fetch_array($students)) {
-                    $student_id = $row['student_id'];
-                    $student_name = $row['student_name'];
-                    $_SESSION['subject'] = $row['subject'];
-                    array_push($student_ids,$student_id);
-                    echo "<label for='$student_id'>$student_id $student_name</label>";
-                    echo "<input type='checkbox' id='$student_id' name='$student_id'><br>";
+            if(isset($_POST['show']) and  $_POST['period'] != '') {
+                $period = $_POST['period'];
+                $teachersclass = $teacher_repository->findByTeacherIdAndDayAndPeriod($teacher_id, $day, $_POST['period']);
+                if ($teachersclass == null) {
+                    echo "<form method='post'>";
+                    echo "<label for='class'>Class</label>";
+                    echo "<input type='text' id='class' name='class'>";
+                    echo '<input type="submit" value="Submit" name="submitClass"/></form>';
+                    if (isset($_POST['submitClass'])) {
+                        $class = $_POST['class'];
+                        $subject = $teacher_repository->findSubjectByClassAndDayAndPeriod($class, $day, $period);
+                        echo "<div>Substitute $class-$subject</div>";
+                        $students = $student_repository->findByClassExcludedOnLeave($class, $cur_date, $period);
+                        $student_attendance = attendanceData($students, $period, $subject);
+                    }
                 }
-                $_SESSION['student_ids'] = $student_ids;
-                echo '<input type="submit" value="Submit" name="submitted"/></form>';
+                else {
+                    $class = $teachersclass['class'];
+                    $subject = $teachersclass['subject'];
+                    echo "<div>$class-$subject</div>";
+                    $students = $student_repository->findByClassExcludedOnLeave($class, $cur_date, $period);
+                    $student_attendance = attendanceData($students, $period, $subject);
+                }
             }
             else if (isset($_POST['submitted'])) {
-                $period = $_SESSION['period'];
-                $subject = $_SESSION['subject'];
-                $current_date = date("Y/m/d");
-                mysqli_query($con, "INSERT INTO teacher_attendance VALUES ('$teacher_id', '$subject', 'present', '$current_date', '$period')");
-                foreach ($_SESSION['student_ids'] as $student_id) {
+                $subject = $_POST['subject'];
+                $period = $_POST['period'];
+
+                foreach (unserialize($_POST['students']) as $student_id) {
                     $status = null;
-                    if (array_key_exists(strval($student_id), $_POST)) {
+                    if (array_key_exists($student_id, $_POST)) {
                         $status = "present";
                     }
                     else {
                         $status = "absent";
                     }
-                    mysqli_query($con, "INSERT INTO student_attendance VALUES ('$student_id', '$subject', '$status', '$current_date', '$period')");
+                    $student_repository->saveAttendance($student_id, $subject, $status, $cur_date, $period);
                 }
-                echo "<div>Attendance submitted.</div>";
+                $teacher_repository->saveAttendance($teacher_id, $subject, "present", $cur_date, $period);
             }
         ?>
     </body>

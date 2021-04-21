@@ -2,7 +2,13 @@
     ob_start();
     session_start();
     if($_SESSION['role']!='teacher') header('location: ../index.php');
-    include ('../connect.php');
+    include ('../database/TeacherRepository.php');
+    include ('../database/StudentRepository.php');
+    include ('../utils.php');
+
+    $student_repository = new StudentRepository();
+    $teacher_repository = new TeacherRepository();
+    $teacher_id = $_SESSION['user_id'];
 ?>
 
 <!DOCTYPE html>
@@ -17,15 +23,20 @@
     </head>
     <body>
         <h1>Student Details</h1>
+        <h3>Hi <?php echo explode(" ", $_SESSION['user_name'])[0]; ?></h3>
         <a href="index.php">Home</a>
+        <a href="leave.php">Approve Leave</a>
+        <a href="../holiday.php">Holiday</a>
+        <a href="students.php">Students</a>
         <a href="attendance.php">Attendance</a>
         <a href="report.php">Report</a>
-        <a href="account.php">Acoount</a>
+        <a href="account.php">Account</a>
+        <a href="password.php">Change Password</a>
         <a href="../logout.php">Logout</a>
         <form method="post">
             <label for="value">Enter</label>
             <select name="query">
-                <option value="1">Class-Section</option>
+                <option value="1">Class</option>
                 <option value="2">Student ID</option>
                 <option value="3">Student Name</option>
             </select>
@@ -38,34 +49,34 @@
                     $value = $_POST['value'];
                     switch ($_POST["query"]) {
                         case 1:
-                            $arr = explode('-', $value);
-                            $student_details = mysqli_query($con, "SELECT DISTINCT s.* FROM classroom c INNER JOIN student s ON c.student_id=s.student_id WHERE class = '$arr[0]' AND section = '$arr[1]'");
+                            $student_details = $student_repository->findByClass($value);
                             break;
                         case 2:
-                            $student_details = mysqli_query($con, "select * from student where student_id='$value'");
+                            $student_details = array($student_repository->findByID($value));
                             break;
                         default:
-                            echo "select * from student where student_name LIKE '%$value%'";
-                            $student_details = mysqli_query($con, "select * from student where student_name LIKE '%$value%'");
+                            $student_details = $student_repository->findLikeName($value);
                     }
-                    $student_header = mysqli_query($con, "DESC student");
-                    $col_size = mysqli_num_rows($student_header);
-                    echo "<table><tr><th>Email ID</th>";
-                    while ($row = mysqli_fetch_array($student_header)) {
-                        $header = ucwords(str_replace("_", " ", $row["Field"]));
-                        echo "<th>$header</th>";
-                    }
-                    echo "</tr>";
-                    while ($row = mysqli_fetch_array($student_details)) {
-                        echo "<tr>";
-                        $student_id = $row['student_id'];
-                        $email_id = mysqli_fetch_row(mysqli_query($con, "select email_id from user where role='student' AND user_id='$student_id'"))[0];
-                        echo "<td>$email_id</td>";
-                        for ($x=0; $x < $col_size; $x++) {
-                            $data = $row[$x];
-                            echo "<td>$data</td>";
+                    
+                    if (count($student_details) > 0) {
+                        echo "<table><thead><tr><th>Student ID</th><th>Name</th><th>Department</th><th>Class</th><tr></thead>";
+                        foreach ($student_details as $student) {
+                            echo "<tr>";
+                            $student_id = $student['student_id'];
+                            $student_name = $student['student_name'];
+                            $department = $student['department'];
+                            $class = $student['class'];
+                            
+                            echo "<td>$student_id</td>";
+                            echo "<td>$student_name</td>";
+                            echo "<td>$department</td>";
+                            echo "<td>$class</td>";
+                            echo "</tr>";
                         }
-                        echo "</tr>";
+                        echo "</table>";
+                    }
+                    else {
+                        echo "<div>No data found</div>";
                     }
                 }
                 else {

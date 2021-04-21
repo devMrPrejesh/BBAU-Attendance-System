@@ -128,6 +128,15 @@
                 return $form_data;
             }
         }
+
+        public static function sendMail(string $email_id, string $subject, string $message): bool {
+            $headers = "From: prejeshpal.24@gmail.com\r\n";
+            if (mail($email_id, $subject, $message, $headers)) {
+                return true;
+            } else {
+                return false;
+            }
+        }
         
     }
 ?>

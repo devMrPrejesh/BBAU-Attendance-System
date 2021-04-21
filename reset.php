@@ -6,9 +6,10 @@
     $response_msg;
     if (isset($_POST['reset']) and $_POST['email'] != "") {
         if ($user_reposistory->existById($_POST['email'])) {
-            $user_reposistory->updatePasswordByEmailId($_POST['email'], Utils::generatePassword());
-            //send password to mail
-            $response_msg = "<div>Your new password is send on mail.<br>Change your password immediately.</div>";
+            $password = Utils::generatePassword();
+            $user_reposistory->updatePasswordById($_POST['email'], $password);
+            Utils::sendMail($_POST['email'], "Reset Password", "Your password has been reset.\nYour new password is : $password\nChange your password immediately.");
+            $response_msg = "<div>Your new password is sent on your e-mail id.<br>Change your password immediately.</div>";
         }
         else {
                 $response_msg = "<div>Email ID not registered.<br>Contact Admin Department.</div>";

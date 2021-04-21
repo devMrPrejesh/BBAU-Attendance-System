@@ -9,7 +9,7 @@
     $student_repository = new StudentRepository();
     $leave_repository = new LeaveRepository();
     $student_id = $_SESSION['user_id'];
-    $teacher_id = $student_repository->findAllByID($student_id)['teacher_id'];
+    $teacher_id = $student_repository->findByID($student_id)['teacher_id'];
 ?>
 
 <!DOCTYPE html>
@@ -19,7 +19,7 @@
     </head>
     <body>
         <h1>Leave Dashboard</h1>
-        <h3>Hi <?php echo explode(" ", $student_repository->findNameById($student_id))[0]; ?></h3>
+        <h3>Hi <?php echo explode(" ", $_SESSION['user_name'])[0]; ?></h3>
         <a href="index.php">Home</a>
         <a href="leave.php">Apply Leave</a>
         <a href="../holiday.php">Holiday</a>
@@ -52,7 +52,6 @@
                         $attachment_type = $_FILES['upload']['type'];
                     }
                     if ($leave_repository->save($student_id, $teacher_id, $_POST['reason'], $_POST['from_date'], $_POST['to_date'], $attachment_type, $attachment_data) != 0) {
-                        $leave_repository->createEvent($_POST['from_date']);
                         echo "Leave added.";
                     }
                     else{
