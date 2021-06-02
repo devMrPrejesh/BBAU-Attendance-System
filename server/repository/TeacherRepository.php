@@ -65,8 +65,8 @@
             }
         }
 
-        public function saveAttendance(int $teacher_id, string $subject, string $status, string $date, int $period): bool {
-            $query = "INSERT INTO teacher_attendance VALUES ('$teacher_id','$subject','$status','$date]','$period')";
+        public function saveAttendance(int $teacher_id, string $status, string $date, int $period): bool {
+            $query = "INSERT INTO teacher_attendance VALUES ('$teacher_id','$status','$date','$period')";
             return mysqli_query($this->conn, $query);
         }
 

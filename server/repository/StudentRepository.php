@@ -24,8 +24,8 @@
             return $this->convertDBRecordstoArray($result);
         }
 
-        public function findAttendanceByIdAndSubjectOrderByDateAndPeriod(int $student_id, string $subject, string $from_date, string $to_date): array {
-            $query = "SELECT * FROM student_attendance WHERE student_id = '$student_id' AND subject = '$subject' AND date BETWEEN '$from_date' AND '$to_date' ORDER BY date, period";
+        public function findAttendanceByIdAndSubjectOrderByDateAndPeriod(int $student_id, string $from_date, string $to_date): array {
+            $query = "SELECT * FROM student_attendance WHERE student_id = '$student_id' AND date BETWEEN '$from_date' AND '$to_date' ORDER BY date, period";
             $result = mysqli_query($this->conn, $query);
             return $this->convertDBRecordstoArray($result);
         }
@@ -82,8 +82,8 @@
             return $this->convertDBRecordstoArray($result);
         }
 
-        public function saveAttendance(int $student_id, string $subject, string $status, string $date, int $period): bool {
-            $query = "INSERT INTO student_attendance VALUES ('$student_id','$subject','$status','$date]','$period')";
+        public function saveAttendance(int $student_id, string $status, string $date, int $period): bool {
+            $query = "INSERT INTO student_attendance VALUES ('$student_id','$status','$date','$period')";
             return mysqli_query($this->conn, $query);
         }
 

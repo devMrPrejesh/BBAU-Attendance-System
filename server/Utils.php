@@ -1,8 +1,12 @@
 <?php
     class Utils {
+        public static function constructMSG(string $message, string ...$args): string {
+            foreach ($args as $arg) { $message = preg_replace("/\[%s\]/", $arg, $message, 1); }
+            return $message;
+        }
 
         public static function isEmail(string $email): bool {
-            if (preg_match("/^[a-z0-9\._-]+@[a-z]+\.[a-z]+$/", $email)){
+            if (preg_match("/^[A-Za-z0-9\._-]+@[A-Za-z]+\.[A-Za-z]+$/", $email)){
                 return TRUE;
             }
             else {
@@ -48,7 +52,7 @@
             foreach ($records as $record) {
                 if ($current_fullDate != $record['date']) {
                     $date = strtotime($record['date']);
-                    array_push($data[$current_month-1], Utils::checkStatus($date, $current_date, $period_size, $status_array));
+                    array_push($data[$current_month-1], self::checkStatus($current_date, $period_size, $status_array));
                     if ($current_month != (int) date('m', $date)){
                         $current_month = (int) date('m', $date);
                         $data[$current_month-1] = array();
@@ -59,36 +63,44 @@
                 }
                 array_push($status_array, $record['status']);
             }
-            array_push($data[$current_month-1], Utils::checkStatus($date, $current_date, $period_size, $status_array));
+            array_push($data[$current_month-1], self::checkStatus($current_date, $period_size, $status_array));
             return $data;
         }
+
+        private static function checkStatus(int $current_date, int $period_size, array $status_array): array {
+            if (count($status_array) != $period_size) {
+                return array("date"=>$current_date, "status"=>"PARTIAL", "lecture_details"=>$status_array);
+            }
+            if (count(array_unique($status_array)) != 1) {
+                return array("date"=>$current_date, "status"=>"PARTIAL", "lecture_details"=>$status_array);
+            }
+            else{
+                return array("date"=>$current_date, "status"=>$status_array[0]);
+            }
+        }
         
-        public static function constructTimetable(array $timetable, int $period_size): array {
+        public static function constructTimetable(array $timetable, int $period_size, string $key): array {
             $data = array();
             $data['periodSize'] = $period_size;
             for ($i=0; $i < 5; $i++) {
                 $day_table = array();
                 for ($j=0; $j < $period_size; $j++) {
-                    array_push($day_table, $timetable[$i*5+$j]['subject']);
+                    array_push($day_table, $timetable[$i*$period_size+$j][$key]);
                 }
                 $data[$i] = $day_table;
             }
             return $data;
         }
 
-        private static function checkStatus(int $date, int $current_date, int $period_size, array $status_array): array {        
-            if (date('N', $date) == 6 or date('N', $date) == 7) {
-                return array("date"=>$current_date, "status"=>"holiday");
+        public static function constructTimetableInfo(array $info_data, string $keyLabel, string $valueLabel): array {
+            $data = array();
+            foreach ($info_data as $value) {
+                $pair = array();
+                $pair['key'] = $value[$keyLabel];
+                $pair['value'] = $value[$valueLabel];
+                array_push($data, $pair);
             }
-            if (count($status_array) != $period_size) {
-                return array("date"=>$current_date, "status"=>"absent");
-            }
-            if (count(array_unique($status_array)) != 1) {
-                return array("date"=>$current_date, "status"=>"partial");
-            }
-            else{
-                return array("date"=>$current_date, "status"=>$status_array[0]);
-            }
+            return $data;
         }
         
         public static function sendMail(string $email_id, string $subject, string $source, bool $template_flag=FALSE, array $substitute=null): bool {
@@ -125,5 +137,31 @@
             }
         }
 
+        private static function getNextFileName(): string {
+            $lastFileNumber = 1;
+            if ($handle = opendir(LeaveAttachment::PATH)) {
+                while (($entry = readdir($handle)) !== FALSE) {
+                    if ($entry != "." && $entry != ".." && str_starts_with($entry, "FILE")) {
+                        preg_match("/^FILE([0-9]+)\..+$/", $entry, $result);
+                        $result = intval($result[1]);
+                        $lastFileNumber = $result > $lastFileNumber? $result: $lastFileNumber;
+                    }
+                }
+                closedir($handle);
+            }
+            $lastFileNumber++;
+            return "FILE".$lastFileNumber;
+        }
+
+        public static function addUploadedFile(string $file_name, string $tmp_name): string {
+            $name = self::getNextFileName().".".pathinfo($file_name, PATHINFO_EXTENSION);
+            if (move_uploaded_file($tmp_name, LeaveAttachment::PATH.$name)) {
+                return $name;
+            }
+            else {
+                throw new ResponseException(ExceptionMSG::FILE_NOT_MOVED, 501);
+            }
+        }
+ 
     }
 ?>

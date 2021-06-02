@@ -13,6 +13,17 @@
                 return FALSE;
             }
         }
+
+        public function findProfilePhotoByID(string $email): ?string {
+            $query = "SELECT profile_photo FROM user WHERE email = '$email'";
+            $result = mysqli_query($this->conn, $query);
+            if (mysqli_num_rows($result) == 1) {
+                return mysqli_fetch_assoc($result)['profile_photo'];
+            }
+            else {
+                return null;
+            }
+        }
         
         public function findUserIdAndFirstNameByIdAndPasswordAndRole(string $email, string $password, string $role): ?array {
             $query = "SELECT user_id, first_name FROM user WHERE email='$email' AND BINARY password='$password' AND role='$role'";

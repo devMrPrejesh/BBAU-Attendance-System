@@ -9,22 +9,21 @@
         
         public function getAttendanceAndTimetable(int $teacher_id): array {
             $teacher_repository = new TeacherRepository();
-
-            $data = array("year" => date("Y"));
+            $data = array();
             $period_size = $teacher_repository->findByID($teacher_id)['number_of_classes'];
-
             $records = $teacher_repository->findAttendanceByIdOrderByDateandPeriod($teacher_id);
+
             if (count($records) == 0) {
-                $data['records'] = "No Attendance is available.";
+                $data['records'] = array();
             }
             else {
                 $data['records'] = Utils::constructRecords($records, $period_size);
             }
             
             $classroom = $teacher_repository->findClassRoomByIdOrderByDayandPeriod($teacher_id);
-            $data['timetable'] = Utils::constructTimetable($classroom, $period_size);
-            $data['subjectTOclass'] = $teacher_repository->findSubjectAndClassById($teacher_id);
-
+            $data['timetable'] = Utils::constructTimetable($classroom, $period_size, "class");
+            $info = $teacher_repository->findSubjectAndClassById($teacher_id);
+            $data['timetableInfo'] = Utils::constructTimetableInfo($info, "class", "subject");
             return $data;
         }
 
@@ -33,17 +32,6 @@
             $result = $teacher_repository->findByID($teacher_id);
             $result['email'] = $email;
             return $result;
-        }
-
-        public function setAccountDetails(int $teacher_id, string $email, array $modified_data): void {
-            if (array_key_exists('email', $modified_data)) {
-                $new_email = $modified_data['email'];
-                unset($modified_data['email']);
-                $user_repository = new UserRepository();
-                $user_repository->updateIdById($email, $new_email);
-            }
-            $teacher_repository = new TeacherRepository();
-            $teacher_repository->updateTeacherById($teacher_id, $modified_data);
         }
 
         public function getStudentDetails(string $filter_by, string $value): array {
@@ -66,7 +54,8 @@
                     $result = $student_repository->findLikeName($value);
                 break;
                 default:
-                    throw new ResponseException("Invalid Data!", 406);
+                    $message = Utils::constructMSG(ExceptionMSG::INVALID_DATA, "Filter By");
+                    throw new ResponseException($message, 406);
             }
             
             foreach($result as $index => $student) {
@@ -77,6 +66,19 @@
             }
             
             return $result;
+        }
+
+        public function getStudentAttachment(int $leave_id, int $teacher_id): string {
+            $leave_repository = new LeaveRepository();
+            $attachment_path = $leave_repository->findAttachmentPathByIdAndTeacherId($leave_id, $teacher_id);
+            
+            if ($attachment_path != null) {
+                return UserProfile::PATH.$attachment_path;
+            }
+            else {
+                $message = Utils::constructMSG(ExceptionMSG::INVALID_DATA, "File Access");
+                throw new ResponseException($message, 406);
+            }
         }
 
         public function getClassDetails(int $teacher_id): array {
@@ -94,8 +96,9 @@
             
             $data['class'] = $result[0]['class'];
             $classroom = $student_repository->findClassRoomByIdOrderByDayandPeriod($student_id);
-            $data['timetable'] = Utils::constructTimetable($classroom, $period_size);
-            $data['subjectTOteacher'] = $student_repository->findSubjectandTeacherNameById($student_id);
+            $data['timetable'] = Utils::constructTimetable($classroom, $period_size, "subject");
+            $info = $student_repository->findSubjectandTeacherNameById($student_id);
+            $data['timetableInfo'] = Utils::constructTimetableInfo($info, "subject", "teacher_name");
             
             foreach($result as $index => $student) {
                 $student['email'] = $user_repository->findIdByUserIdAndRole($student['student_id'], UserRole::STUDENT);
@@ -124,8 +127,8 @@
                 $result = $student_repository->findAttendanceByIdOrderByDateandPeriod($student_id, $from_date, $to_date);
                 $records = Utils::constructRecords($result, $period_size);
             }
-            else if ($subject = $student_repository->findSubjectByIdAndTeacherId($student['class'], $teacher_id)) {
-                $result = $student_repository->findAttendanceByIdAndSubjectOrderByDateandPeriod($student_id, $subject, $from_date, $to_date);
+            elseif ($subject = $student_repository->findSubjectByIdAndTeacherId($student['class'], $teacher_id)) {
+                $result = $student_repository->findAttendanceByIdAndSubjectOrderByDateandPeriod($student_id, $from_date, $to_date);
                 $records = Utils::constructRecords($result, $period_size);
             }
             else {
@@ -206,11 +209,11 @@
                 else {
                     $status = "absent";
                 }
-                if (!$student_repository->saveAttendance($student_id, $classroom['subject'], $status, $current_date, $period)) {
+                if (!$student_repository->saveAttendance($student_id, $status, $current_date, $period)) {
                     throw new ResponseException("Duplicate Attendance");
                 }
             }
-            if (!$teacher_repository->saveAttendance($teacher_id, $classroom['subject'], "present", $current_date, $period)) {
+            if (!$teacher_repository->saveAttendance($teacher_id, "present", $current_date, $period)) {
                 throw new ResponseException("Duplicate Attendance");
             }
             

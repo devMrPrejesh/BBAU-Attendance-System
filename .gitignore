@@ -1,0 +1,9 @@
+# For Visual Studio Code Editor
+.vscode
+
+# For folder containing uploaded files except the default User Profile Image
+server/upload/*
+!server/upload/default_user_profile.png
+
+# Adding test files
+test.php

@@ -1,3 +1,5 @@
 <?php
-    echo date("Y-m-d");
+    //
+    $er = array("gft"=>"234");
+    echo $er["gfdt"];
 ?>

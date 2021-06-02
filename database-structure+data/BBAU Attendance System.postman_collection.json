@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "9a32ab35-c0c7-4688-af70-6a0904494929",
+		"_postman_id": "affc9033-25ec-4c20-91c2-ec5b1b510154",
 		"name": "BBAU Attendance System",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -44,147 +44,9 @@
 							}
 						},
 						"url": {
-							"raw": "{{host-url}}/UserRouter.php",
+							"raw": "{{domain}}/UserRouter.php",
 							"host": [
-								"{{host-url}}"
-							],
-							"path": [
-								"UserRouter.php"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Reset Password",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "action",
-									"value": "resetPassword",
-									"type": "text"
-								},
-								{
-									"key": "email",
-									"value": "prejesh@gmail.com",
-									"type": "text"
-								}
-							],
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{host-url}}/UserRouter.php",
-							"host": [
-								"{{host-url}}"
-							],
-							"path": [
-								"UserRouter.php"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Logout",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "action",
-									"value": "logout",
-									"type": "text"
-								}
-							],
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{host-url}}/UserRouter.php",
-							"host": [
-								"{{host-url}}"
-							],
-							"path": [
-								"UserRouter.php"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Holidays",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "action",
-									"value": "getHoliday",
-									"type": "text"
-								}
-							]
-						},
-						"url": {
-							"raw": "{{host-url}}/UserRouter.php",
-							"host": [
-								"{{host-url}}"
-							],
-							"path": [
-								"UserRouter.php"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Change Password",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "action",
-									"value": "changePassword",
-									"type": "text"
-								},
-								{
-									"key": "old_password",
-									"value": "student",
-									"type": "text"
-								},
-								{
-									"key": "new_password",
-									"value": "Preje$h123",
-									"type": "text"
-								}
-							],
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{host-url}}/UserRouter.php",
-							"host": [
-								"{{host-url}}"
+								"{{domain}}"
 							],
 							"path": [
 								"UserRouter.php"
@@ -229,9 +91,207 @@
 							}
 						},
 						"url": {
-							"raw": "{{host-url}}/UserRouter.php",
+							"raw": "{{domain}}/UserRouter.php",
 							"host": [
-								"{{host-url}}"
+								"{{domain}}"
+							],
+							"path": [
+								"UserRouter.php"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Logout",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "action",
+									"value": "logout",
+									"type": "text"
+								}
+							],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}/UserRouter.php",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"UserRouter.php"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Profile Photo",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{domain}}/FileRouter.php?UserProfile",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"FileRouter.php"
+							],
+							"query": [
+								{
+									"key": "UserProfile",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Holidays",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "action",
+									"value": "getHoliday",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{domain}}/UserRouter.php",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"UserRouter.php"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Reset Password",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "action",
+									"value": "resetPassword",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "prejesh@gmail.com",
+									"type": "text"
+								}
+							],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}/UserRouter.php",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"UserRouter.php"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Change Password",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "action",
+									"value": "changePassword",
+									"type": "text"
+								},
+								{
+									"key": "old_password",
+									"value": "student",
+									"type": "text"
+								},
+								{
+									"key": "new_password",
+									"value": "Preje$h123",
+									"type": "text"
+								}
+							],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}/UserRouter.php",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"UserRouter.php"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Change Email ID",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "action",
+									"value": "changeEmail",
+									"type": "text"
+								},
+								{
+									"key": "new_email",
+									"value": "aman@gmail.com",
+									"type": "text"
+								}
+							],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}/UserRouter.php",
+							"host": [
+								"{{domain}}"
 							],
 							"path": [
 								"UserRouter.php"
@@ -266,9 +326,9 @@
 							}
 						},
 						"url": {
-							"raw": "{{host-url}}/StudentRouter.php",
+							"raw": "{{domain}}/StudentRouter.php",
 							"host": [
-								"{{host-url}}"
+								"{{domain}}"
 							],
 							"path": [
 								"StudentRouter.php"
@@ -298,9 +358,120 @@
 							}
 						},
 						"url": {
-							"raw": "{{host-url}}/StudentRouter.php",
+							"raw": "{{domain}}/StudentRouter.php",
 							"host": [
-								"{{host-url}}"
+								"{{domain}}"
+							],
+							"path": [
+								"StudentRouter.php"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Show Attachment",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{domain}}/FileRouter.php?Role=STUDENT&Leave=3",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"FileRouter.php"
+							],
+							"query": [
+								{
+									"key": "Role",
+									"value": "STUDENT"
+								},
+								{
+									"key": "Leave",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Apply Leave",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "action",
+									"value": "applyLeave",
+									"type": "text"
+								},
+								{
+									"key": "reason",
+									"value": "random",
+									"type": "text"
+								},
+								{
+									"key": "from",
+									"value": "2021-05-27",
+									"type": "text"
+								},
+								{
+									"key": "to",
+									"value": "2021-05-28",
+									"type": "text"
+								},
+								{
+									"key": "uploaded_file",
+									"type": "file",
+									"src": "/C:/Users/PREJESH/Desktop/2nd article.PNG"
+								}
+							],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}/StudentRouter.php",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"StudentRouter.php"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Check Status Change",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "action",
+									"value": "updateInLeave",
+									"type": "text"
+								}
+							],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}/StudentRouter.php",
+							"host": [
+								"{{domain}}"
 							],
 							"path": [
 								"StudentRouter.php"
@@ -330,130 +501,9 @@
 							}
 						},
 						"url": {
-							"raw": "{{host-url}}/StudentRouter.php",
+							"raw": "{{domain}}/StudentRouter.php",
 							"host": [
-								"{{host-url}}"
-							],
-							"path": [
-								"StudentRouter.php"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Edit Acoount Details",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "action",
-									"value": "setAccountDetails",
-									"type": "text"
-								},
-								{
-									"key": "email",
-									"value": "test@gmail.com",
-									"type": "text"
-								}
-							],
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{host-url}}/StudentRouter.php",
-							"host": [
-								"{{host-url}}"
-							],
-							"path": [
-								"StudentRouter.php"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Apply Leave",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "action",
-									"value": "applyLeave",
-									"type": "text"
-								},
-								{
-									"key": "reason",
-									"value": "random",
-									"type": "text"
-								},
-								{
-									"key": "from_date",
-									"value": "2021-05-06",
-									"type": "text"
-								},
-								{
-									"key": "to_date",
-									"value": "2021-05-07",
-									"type": "text"
-								},
-								{
-									"key": "uploaded_file",
-									"type": "file",
-									"src": "/C:/Users/Aman Singh/Downloads/a.pdf"
-								}
-							],
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{host-url}}/StudentRouter.php",
-							"host": [
-								"{{host-url}}"
-							],
-							"path": [
-								"StudentRouter.php"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Check Leave",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "action",
-									"value": "checkLeaveStatus",
-									"type": "text"
-								}
-							],
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{host-url}}/StudentRouter.php",
-							"host": [
-								"{{host-url}}"
+								"{{domain}}"
 							],
 							"path": [
 								"StudentRouter.php"
@@ -496,9 +546,9 @@
 									]
 								},
 								"url": {
-									"raw": "{{host-url}}/TeacherRouter.php",
+									"raw": "{{domain}}/TeacherRouter.php",
 									"host": [
-										"{{host-url}}"
+										"{{domain}}"
 									],
 									"path": [
 										"TeacherRouter.php"
@@ -538,9 +588,9 @@
 									]
 								},
 								"url": {
-									"raw": "{{host-url}}/TeacherRouter.php",
+									"raw": "{{domain}}/TeacherRouter.php",
 									"host": [
-										"{{host-url}}"
+										"{{domain}}"
 									],
 									"path": [
 										"TeacherRouter.php"
@@ -565,9 +615,9 @@
 									]
 								},
 								"url": {
-									"raw": "{{host-url}}/TeacherRouter.php",
+									"raw": "{{domain}}/TeacherRouter.php",
 									"host": [
-										"{{host-url}}"
+										"{{domain}}"
 									],
 									"path": [
 										"TeacherRouter.php"
@@ -597,9 +647,9 @@
 									]
 								},
 								"url": {
-									"raw": "{{host-url}}/TeacherRouter.php",
+									"raw": "{{domain}}/TeacherRouter.php",
 									"host": [
-										"{{host-url}}"
+										"{{domain}}"
 									],
 									"path": [
 										"TeacherRouter.php"
@@ -624,9 +674,9 @@
 									]
 								},
 								"url": {
-									"raw": "{{host-url}}/TeacherRouter.php",
+									"raw": "{{domain}}/TeacherRouter.php",
 									"host": [
-										"{{host-url}}"
+										"{{domain}}"
 									],
 									"path": [
 										"TeacherRouter.php"
@@ -677,9 +727,9 @@
 									]
 								},
 								"url": {
-									"raw": "{{host-url}}/TeacherRouter.php",
+									"raw": "{{domain}}/TeacherRouter.php",
 									"host": [
-										"{{host-url}}"
+										"{{domain}}"
 									],
 									"path": [
 										"TeacherRouter.php"
@@ -711,9 +761,9 @@
 							}
 						},
 						"url": {
-							"raw": "{{host-url}}/TeacherRouter.php",
+							"raw": "{{domain}}/TeacherRouter.php",
 							"host": [
-								"{{host-url}}"
+								"{{domain}}"
 							],
 							"path": [
 								"TeacherRouter.php"
@@ -743,46 +793,9 @@
 							}
 						},
 						"url": {
-							"raw": "{{host-url}}/TeacherRouter.php",
+							"raw": "{{domain}}/TeacherRouter.php",
 							"host": [
-								"{{host-url}}"
-							],
-							"path": [
-								"TeacherRouter.php"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Edit Acoount Details",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "action",
-									"value": "setAccountDetails",
-									"type": "text"
-								},
-								{
-									"key": "email",
-									"value": "test@gmail.com",
-									"type": "text"
-								}
-							],
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{host-url}}/TeacherRouter.php",
-							"host": [
-								"{{host-url}}"
+								"{{domain}}"
 							],
 							"path": [
 								"TeacherRouter.php"
@@ -794,10 +807,30 @@
 			]
 		}
 	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
 	"variable": [
 		{
-			"key": "host-url",
-			"value": "http://localhost/bbau-attendance-system"
+			"key": "domain",
+			"value": "http://localhost/bbau-attendance-system/"
 		}
 	]
 }

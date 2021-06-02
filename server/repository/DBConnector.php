@@ -3,7 +3,7 @@
         private string $servername = "localhost";
         private string $username = "root";
         private string  $password = "";
-        private string  $dbname = "university_attendance_system";
+        private string  $dbname = "attendance_database";
         
         protected $conn;
 
