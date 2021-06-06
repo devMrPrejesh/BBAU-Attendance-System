@@ -64,11 +64,11 @@ INSERT INTO `user` (`email`, `password`, `role`, `user_id`, `first_name`, `profi
 --
 
 INSERT INTO `teacher` (`teacher_id`, `teacher_name`, `department`, `number_of_classes`, `class`) VALUES
-(1, 'Sumit Bangar', 'CSE', 5, NULL),
-(2, 'Simi Pandey', 'CSE', 5, NULL),
-(3, 'Anuj Giri', 'CSE', 5, NULL),
-(4, 'Sooraj Yadav', 'ECE', 5, NULL),
-(5, 'Mohit Gaur', 'CSE', 5, NULL);
+(1, 'Sumit Bangar', 'CSE', 5, 'CSE-1A'),
+(2, 'Simi Pandey', 'CSE', 5, 'CSE-1B'),
+(3, 'Anuj Giri', 'CSE', 5, 'MCA-1A'),
+(4, 'Sooraj Yadav', 'ECE', 5, 'ECE-1A'),
+(5, 'Mohit Gaur', 'CSE', 5, 'SE-1A');
 
 -- --------------------------------------------------------
 
@@ -207,19 +207,6 @@ INSERT INTO `classroom` (`teacher_id`, `class`, `day`, `period`, `subject`) VALU
 
 --
 --
--- Updating data for table `teacher`
---
-
-UPDATE `teacher` SET `class` = 'CSE-1A' WHERE `teacher_id` = 1;
-UPDATE `teacher` SET `class` = 'CSE-1B' WHERE `teacher_id` = 2;
-UPDATE `teacher` SET `class` = 'MCA-1A' WHERE `teacher_id` = 3;
-UPDATE `teacher` SET `class` = 'ECE-1A' WHERE `teacher_id` = 4;
-UPDATE `teacher` SET `class` = 'SE-1A' WHERE `teacher_id` = 5;
-
--- --------------------------------------------------------
-
---
---
 -- Dumping data for table `holiday_calendar`
 --
 
@@ -286,11 +273,11 @@ INSERT INTO `student` (`student_id`, `student_name`, `department`, `batch`, `sem
 -- Dumping data for table `leave_system`
 --
 
-INSERT INTO `leave_system` (`leave_id`, `teacher_id`, `student_id`, `reason`, `from_date`, `to_date`, `status`, `remarks`, `attachment_type`, `attachment_path`) VALUES
-(1, 3, 20, 'I have Viral fever. due to that I want one day leave.', '2021-03-24', '2021-03-24', 'APPROVED', 'Approved', NULL, NULL),
-(2, 1, 1, 'I have an appointment for hospital, due to that I want one day leave.', '2021-04-01', '2021-04-01', 'APPROVED', 'Approved', NULL, NULL),
-(3, 1, 1, 'I have Viral fever. due to that I want one day leave.', '2021-04-09', '2021-04-09', 'REJECTED', 'Rejected', NULL, NULL),
-(4, 3, 20, 'I have an appointment for hospital, due to that I want one day leave.', '2021-04-13', '2021-04-13', 'APPROVED', 'Approved', NULL, NULL);
+INSERT INTO `leave_system` (`leave_id`, `teacher_id`, `student_id`, `reason`, `from_date`, `to_date`, `status`, `status_change`, `remarks`, `attachment_path`) VALUES
+(1, 3, 20, 'I have Viral fever. due to that I want one day leave.', '2021-03-24', '2021-03-24', 'APPROVED', 0, 'Approved', NULL),
+(2, 1, 1, 'I have an appointment for hospital, due to that I want one day leave.', '2021-04-01', '2021-04-01', 'APPROVED', 0, 'Approved', NULL),
+(3, 1, 1, 'I have Viral fever. due to that I want one day leave.', '2021-04-09', '2021-04-09', 'REJECTED', 0, 'Rejected', NULL),
+(4, 3, 20, 'I have an appointment for hospital, due to that I want one day leave.', '2021-04-13', '2021-04-13', 'APPROVED', 0, 'Approved', NULL);
 
 -- --------------------------------------------------------
 

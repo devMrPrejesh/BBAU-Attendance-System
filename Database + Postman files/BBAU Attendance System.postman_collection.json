@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "affc9033-25ec-4c20-91c2-ec5b1b510154",
+		"_postman_id": "bf43c440-55bb-41f0-b19d-3d71cbf2f86f",
 		"name": "BBAU Attendance System",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -338,6 +338,58 @@
 					"response": []
 				},
 				{
+					"name": "Apply Leave",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "action",
+									"value": "applyLeave",
+									"type": "text"
+								},
+								{
+									"key": "reason",
+									"value": "random",
+									"type": "text"
+								},
+								{
+									"key": "from",
+									"value": "2021-05-27",
+									"type": "text"
+								},
+								{
+									"key": "to",
+									"value": "2021-05-28",
+									"type": "text"
+								},
+								{
+									"key": "uploaded_file",
+									"type": "file",
+									"src": "/C:/Users/Aman Singh/Documents/attendance_system_files/a.pdf"
+								}
+							],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}/StudentRouter.php",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"StudentRouter.php"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Leave",
 					"request": {
 						"method": "POST",
@@ -370,7 +422,7 @@
 					"response": []
 				},
 				{
-					"name": "Show Attachment",
+					"name": "Show Leave Attachment",
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -391,58 +443,6 @@
 									"key": "Leave",
 									"value": "3"
 								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Apply Leave",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "action",
-									"value": "applyLeave",
-									"type": "text"
-								},
-								{
-									"key": "reason",
-									"value": "random",
-									"type": "text"
-								},
-								{
-									"key": "from",
-									"value": "2021-05-27",
-									"type": "text"
-								},
-								{
-									"key": "to",
-									"value": "2021-05-28",
-									"type": "text"
-								},
-								{
-									"key": "uploaded_file",
-									"type": "file",
-									"src": "/C:/Users/PREJESH/Desktop/2nd article.PNG"
-								}
-							],
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{domain}}/StudentRouter.php",
-							"host": [
-								"{{domain}}"
-							],
-							"path": [
-								"StudentRouter.php"
 							]
 						}
 					},
@@ -521,7 +521,7 @@
 					"name": "Student",
 					"item": [
 						{
-							"name": "Students Details",
+							"name": "Apply Attendance",
 							"request": {
 								"method": "POST",
 								"header": [],
@@ -530,59 +530,33 @@
 									"formdata": [
 										{
 											"key": "action",
-											"value": "getStudentDetails",
+											"value": "applyAttendance",
 											"type": "text"
 										},
 										{
-											"key": "filterBy",
-											"value": "name",
-											"type": "text"
-										},
-										{
-											"key": "value",
-											"value": "pr",
-											"type": "text"
-										}
-									]
-								},
-								"url": {
-									"raw": "{{domain}}/TeacherRouter.php",
-									"host": [
-										"{{domain}}"
-									],
-									"path": [
-										"TeacherRouter.php"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Students Attendance Report",
-							"request": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "formdata",
-									"formdata": [
-										{
-											"key": "action",
-											"value": "getStudentAttendance",
-											"type": "text"
-										},
-										{
-											"key": "student_id",
+											"key": "period",
 											"value": "1",
 											"type": "text"
 										},
 										{
-											"key": "from_date",
-											"value": "2021-03-15",
+											"key": "class",
+											"value": "CSE-1A",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "student_1",
+											"value": "on",
 											"type": "text"
 										},
 										{
-											"key": "to_date",
-											"value": "2021-04-16",
+											"key": "student_8",
+											"value": "on",
+											"type": "text"
+										},
+										{
+											"key": "student_12",
+											"value": "on",
 											"type": "text"
 										}
 									]
@@ -643,6 +617,11 @@
 											"key": "period",
 											"value": "1",
 											"type": "text"
+										},
+										{
+											"key": "class",
+											"value": "CSE-1A",
+											"type": "text"
 										}
 									]
 								},
@@ -686,7 +665,34 @@
 							"response": []
 						},
 						{
-							"name": "Apply Attendance",
+							"name": "Show Leave Attachment",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{domain}}/FileRouter.php?Role=TEACHER&Leave=3",
+									"host": [
+										"{{domain}}"
+									],
+									"path": [
+										"FileRouter.php"
+									],
+									"query": [
+										{
+											"key": "Role",
+											"value": "TEACHER"
+										},
+										{
+											"key": "Leave",
+											"value": "3"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Students Attendance Report",
 							"request": {
 								"method": "POST",
 								"header": [],
@@ -695,33 +701,59 @@
 									"formdata": [
 										{
 											"key": "action",
-											"value": "applyAttendance",
+											"value": "getStudentAttendance",
 											"type": "text"
 										},
 										{
-											"key": "period",
-											"value": "3",
+											"key": "student_id",
+											"value": "1",
 											"type": "text"
 										},
 										{
-											"key": "class",
-											"value": "CSE-1A",
-											"type": "text",
-											"disabled": true
-										},
-										{
-											"key": "student_1",
-											"value": "on",
+											"key": "from_date",
+											"value": "2021-03-15",
 											"type": "text"
 										},
 										{
-											"key": "student_8",
-											"value": "on",
+											"key": "to_date",
+											"value": "2021-04-16",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{domain}}/TeacherRouter.php",
+									"host": [
+										"{{domain}}"
+									],
+									"path": [
+										"TeacherRouter.php"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Students Details",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "action",
+											"value": "getStudentDetails",
 											"type": "text"
 										},
 										{
-											"key": "student_12",
-											"value": "on",
+											"key": "filterBy",
+											"value": "name",
+											"type": "text"
+										},
+										{
+											"key": "value",
+											"value": "pr",
 											"type": "text"
 										}
 									]
@@ -739,38 +771,6 @@
 							"response": []
 						}
 					]
-				},
-				{
-					"name": "Attendance and Timetable",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "action",
-									"value": "getAttendanceAndTimetable",
-									"type": "text"
-								}
-							],
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{domain}}/TeacherRouter.php",
-							"host": [
-								"{{domain}}"
-							],
-							"path": [
-								"TeacherRouter.php"
-							]
-						}
-					},
-					"response": []
 				},
 				{
 					"name": "Acoount Details",
@@ -803,8 +803,44 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Attendance and Timetable",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "action",
+									"value": "getAttendanceAndTimetable",
+									"type": "text"
+								}
+							],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}/TeacherRouter.php",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"TeacherRouter.php"
+							]
+						}
+					},
+					"response": []
 				}
 			]
+		},
+		{
+			"name": "Admin",
+			"item": []
 		}
 	],
 	"event": [
@@ -830,7 +866,7 @@
 	"variable": [
 		{
 			"key": "domain",
-			"value": "http://localhost/bbau-attendance-system/"
+			"value": "http://localhost/bbau"
 		}
 	]
 }

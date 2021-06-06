@@ -18,12 +18,12 @@
                 if ($role === UserRole::STUDENT) {
                     include ('server/controller/StudentController.php');
                     $student_controller = new StudentController();
-                    $result = $student_controller->getAttachment($leave_id);
+                    $result = $student_controller->getLeaveAttachment($leave_id);
                 }
                 elseif ($role === UserRole::TEACHER) {
                     include ('server/controller/TeacherController.php');
                     $teacher_controller = new TeacherController();
-                    $result = $teacher_controller->getStudentAttachment($leave_id);
+                    $result = $teacher_controller->getLeaveAttachment($leave_id);
                 }
                 else {
                     throw new ResponseException(ExceptionMSG::FORBIDDEN);

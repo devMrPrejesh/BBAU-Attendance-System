@@ -15,12 +15,8 @@
             mysqli_select_db($this->conn, $this->dbname) or die ('Cannot found database.');
         }
 
-        protected static function convertDBRecordstoArray(object $records): array {
-            $result = array();
-            while($row = mysqli_fetch_assoc($records)) {
-                array_push($result, $row);
-            }
-            return $result;
+        function __destruct() {
+            mysqli_close($this->conn);
         }
 
         private function setConfig(array $args): void {
@@ -38,8 +34,12 @@
             }
         }
 
-        function __destruct() {
-            mysqli_close($this->conn);
+        protected static function convertDBRecordstoArray(object $records): array {
+            $result = array();
+            while($row = mysqli_fetch_assoc($records)) {
+                array_push($result, $row);
+            }
+            return $result;
         }
         
     }

@@ -20,13 +20,19 @@
         public const MAIL_FAILURE = "Your password can't be sent via mail.";
         public const FILE_NOT_MOVED = "Your file cannot be uploaded.";
         public const LEAVE_FAILURE = "Your leave cannot be added.";
+        public const NOT_CLASS_TEACHER = "You have no class assigned.";
+        public const NON_ACCESS_TEACHER = "You are not a subject or class teacher for student.";
+        public const CLASS_NA = "It is your free lecture, no Class Available.";
+        public const WEEKEND = "Today is a weekend.";
+        public const DUPLICATE_ATTENDANCE = "Duplicate attendance records found.";
     }
 
     abstract class ResponseMSG extends Enum {
         public const REDIRECT_URL = "{\"redirect\": \"[%s]\"}";
         public const RESET_PASSWORD = "{\"success\": \"Your password has been reset.<br>Please check your mail.\"}";
         public const CHANGE_PASSWORD = "{\"success\": \"Password updated successfully.\"}";
-        public const CHANGE_EMAIL= "{\"success\": \"Email address updated successfully.\"}";
+        public const CHANGE_EMAIL = "{\"success\": \"Email address updated successfully.\"}";
+        public const ATTENDANCE_ADDED = "{\"success\": \"Attendance added successfully.\"}";
     }
 
     abstract class MailTemplate extends Enum {
@@ -34,8 +40,12 @@
     }
     
     abstract class RedirectUrl extends Enum {
-        public const LOGIN = "http://localhost/attendance/index.php";
-        public const RESET_PASSWORD = "http://localhost/attendance/index.php?redirect=password";
+        public const DOMAIN = "http://localhost/attendance/";
+        public const LOGIN = "index.php";
+        public const RESET_PASSWORD = "index.php?redirect=password";
+        public const STUDENT = "student.php";
+        public const TEACHER = "teacher.php";
+        public const ADMIN = "admin.php";
     }
     
     abstract class UserProfile extends Enum {
@@ -63,13 +73,5 @@
             "jpeg" => "image/jpeg", 
             "pdf" => "application/pdf"
         );
-    }
-
-    abstract class EditableStudentDetails extends Enum {
-        //public const STUDENTNAME = "student_name";
-    }
-
-    abstract class EditableTeacherDetails extends Enum {
-        //public const TEACHERNAME = "teacher_name";
     }
 ?>

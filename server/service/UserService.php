@@ -61,7 +61,7 @@
 				$user_repository->updatePasswordById($email, $password);
                 $substitute = array(
                     "{password}" => $password, 
-                    "{redirect_link}" => RedirectUrl::RESET_PASSWORD
+                    "{redirect_link}" => RedirectUrl::DOMAIN.RedirectUrl::RESET_PASSWORD
                 );
                 
 				if (!Utils::sendMail($_POST['email'], "Reset Password", MailTemplate::RESET_PASSWORD, TRUE, $substitute)) {

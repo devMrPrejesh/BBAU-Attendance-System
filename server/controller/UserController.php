@@ -105,7 +105,7 @@
                     $_SESSION['email'] = $email;
                     $_SESSION['first_name'] = $result['first_name'];
 
-                    return new ResponseEntity(Utils::constructMSG(ResponseMSG::REDIRECT_URL, strtolower($role).'.php'));
+                    return new ResponseEntity(Utils::constructMSG(ResponseMSG::REDIRECT_URL, constant("RedirectUrl::$role")));
                 }
                 else {
                     $message = Utils::constructMSG(ExceptionMSG::INVALID_DATA, "Email-ID, Password or Role");
