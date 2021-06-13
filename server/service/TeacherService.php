@@ -19,7 +19,7 @@
             }
         }
 
-        public function applyAttendance(int $teacher_id, int $period, array $present_students, ?string $class): void {
+        public function applyAttendance(int $teacher_id, int $period, array $present_students, string $class=NULL): void {
             $teacher_repository = new TeacherRepository();
             $student_repository = new StudentRepository();
             $current_date = date("Y-m-d");
@@ -28,10 +28,10 @@
             $this->checkAttendanceDay($teacher_id, $period);
             $classroom = $teacher_repository->findByIdAndDayAndPeriod($teacher_id, $day, $period);
             if ($classroom['class'] == 'NA') {
-                if ($class == null) { throw new ResponseException(ExceptionMSG::CLASS_NA, 406); }
+                if ($class == NULL) { throw new ResponseException(ExceptionMSG::CLASS_NA, 406); }
                 else {
                     $classroom = $teacher_repository->findByClassAndDayAndPeriod($class, $day, $period);
-                    if ($classroom == null || $classroom['class'] == 'NA') {
+                    if ($classroom == NULL || $classroom['class'] == 'NA') {
                         $message = Utils::constructMSG(ExceptionMSG::INVALID_DATA, "Class");
                         throw new ResponseException($message, 406);
                     }
@@ -39,7 +39,7 @@
             }
             $result = $student_repository->findByClassExcludedOnLeave($classroom['class'], $current_date, $period);
             foreach ($result as $student) {
-                $status = null;
+                $status = NULL;
                 $student_id = $student['student_id'];
                 if (array_key_exists("student_".$student_id, $present_students)) {
                     $status = "present";
@@ -55,6 +55,21 @@
                 throw new ResponseException(ExceptionMSG::DUPLICATE_ATTENDANCE);
             }
             
+        }
+        
+        public function decideLeave(int $leave_id, string $value, string $remark): void {
+            $leave_repository = new LeaveRepository();
+            $leave = $leave_repository->findById($leave_id);
+            if ($leave == NULL) {
+                $message = Utils::constructMSG(ExceptionMSG::INVALID_DATA, "Leave ID");
+                throw new ResponseException($message, 406);
+            }
+            if (in_array($leave['status'], LeaveDecide::INITIAL_STATUS)) {
+                $leave_repository->updateLeaveById($leave_id, $value, $remark);
+            }
+            else {
+                throw new ResponseException(ExceptionMSG::LEAVE_STATUS_OVERWRITE, 400);
+            }
         }
 
         public function getAccountDetails(int $teacher_id, string $email): array {
@@ -84,7 +99,7 @@
             return $data;
         }
         
-        public function getAttendedClass(int $teacher_id, int $period, ?string $class): array {
+        public function getAttendedClass(int $teacher_id, int $period, string $class=NULL): array {
             $teacher_repository = new TeacherRepository();
             $student_repository = new StudentRepository();
             $day = date("N") - 1;
@@ -92,10 +107,10 @@
             $this->checkAttendanceDay($teacher_id, $period);
             $classroom = $teacher_repository->findByIdAndDayAndPeriod($teacher_id, $day, $period);
             if ($classroom['class'] == 'NA') {
-                if ($class == null) { throw new ResponseException(ExceptionMSG::CLASS_NA, 406); }
+                if ($class == NULL) { throw new ResponseException(ExceptionMSG::CLASS_NA, 406); }
                 else {
                     $classroom = $teacher_repository->findByClassAndDayAndPeriod($class, $day, $period);
-                    if ($classroom == null || $classroom['class'] == 'NA') {
+                    if ($classroom == NULL || $classroom['class'] == 'NA') {
                         $message = Utils::constructMSG(ExceptionMSG::INVALID_DATA, "Class");
                         throw new ResponseException($message, 406);
                     }
@@ -120,7 +135,7 @@
             $student_repository = new StudentRepository();
             $result = $student_repository->findByTeacherId($teacher_id);
             
-            if ($result == null) {
+            if ($result == NULL) {
                 throw new ResponseException(ExceptionMSG::NOT_CLASS_TEACHER, 403);
             }
 
@@ -146,11 +161,34 @@
             return $data;
         }
 
+        public function getLeave(int $teacher_id): array {
+            $student_repository = new StudentRepository();
+            $leave_repository = new LeaveRepository();
+            $result = $leave_repository->findByTeacherId($teacher_id);
+
+            foreach($result as $index => $leave) {
+                $leave['appraisee_name'] = $student_repository->findById($leave['student_id'])['student_name'];
+                unset($leave['teacher_id']);
+                unset($leave['student_id']);
+                unset($leave['status_change']);
+                if ($leave['attachment_path'] != NULL) {
+                    $leave['attachment_flag'] = TRUE;
+                }
+                else {
+                    $leave['attachment_flag'] = FALSE;
+                }
+                unset($leave['attachment_path']);
+                $result[$index] = $leave;
+            }
+            
+            return $result;
+        }
+
         public function getLeaveAttachment(int $leave_id, int $teacher_id): string {
             $leave_repository = new LeaveRepository();
             $attachment_path = $leave_repository->findAttachmentPathByIdAndTeacherId($leave_id, $teacher_id);
             
-            if ($attachment_path != null) {
+            if ($attachment_path != NULL) {
                 return UserProfile::PATH.$attachment_path;
             }
             else {
@@ -168,13 +206,13 @@
             $student_repository = new StudentRepository();
             $student = $student_repository->findById($student_id);
             
-            if ($student == null) {
+            if ($student == NULL) {
                 $message = Utils::constructMSG(ExceptionMSG::INVALID_DATA, "Student ID");
                 throw new ResponseException($message, 406);
             }
             
             $period_size = $student['number_of_subjects'];
-            $records = null;
+            $records = NULL;
             
             if ($student['teacher_id'] == $teacher_id) {
                 $result = $student_repository->findAttendanceByIdOrderByDateandPeriod($student_id, $from_date, $to_date);
@@ -196,7 +234,7 @@
         public function getStudentDetails(string $filter_by, string $value): array {
             $student_repository = new StudentRepository();
             $teacher_repository = new TeacherRepository();
-            $result = null;
+            $result = NULL;
             
             switch ($filter_by) {
                 case "class":
@@ -205,7 +243,7 @@
                 case "id":
                     $student_details = $student_repository->findById((int) $value);
                     $result = array();
-                    if ($student_details != null) {
+                    if ($student_details != NULL) {
                         array_push($result, $student_details);
                     }
                 break;
@@ -224,6 +262,12 @@
                 $result[$index] = $student;
             }
             
+            return $result;
+        }
+
+        public function updateInLeave(int $teacher_id): array {
+            $leave_repository = new LeaveRepository();
+            $result = array("result" => $leave_repository->checkStatusChange($teacher_id, FALSE));
             return $result;
         }
         

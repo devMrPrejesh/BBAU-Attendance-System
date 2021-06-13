@@ -25,6 +25,8 @@
         public const CLASS_NA = "It is your free lecture, no Class Available.";
         public const WEEKEND = "Today is a weekend.";
         public const DUPLICATE_ATTENDANCE = "Duplicate attendance records found.";
+        public const LEAVE_STATUS_OVERWRITE = "You cannot overwrite your previous decision.";
+        public const USER_EXIST = "[%s] ID [%s] already exists.";
     }
 
     abstract class ResponseMSG extends Enum {
@@ -33,6 +35,8 @@
         public const CHANGE_PASSWORD = "{\"success\": \"Password updated successfully.\"}";
         public const CHANGE_EMAIL = "{\"success\": \"Email address updated successfully.\"}";
         public const ATTENDANCE_ADDED = "{\"success\": \"Attendance added successfully.\"}";
+        public const LEAVE_DECIDE = "{\"success\": \"Leave [%s] successfully.\"}";
+        public const USER_ADDED = "{\"success\": \"[%s] added successfully.\"}";
     }
 
     abstract class MailTemplate extends Enum {
@@ -62,6 +66,12 @@
     abstract class UserRole extends Enum {
         public const STUDENT = "STUDENT";
         public const TEACHER = "TEACHER";
+        public const ADMIN = "ADMIN";
+    }
+
+    abstract class LeaveDecide extends Enum {
+        public const INITIAL_STATUS = array("INITIATED", "READ");
+        public const FINAL_STATUS = array("APPROVED","REJECTED");
     }
     
     abstract class LeaveAttachment extends Enum {

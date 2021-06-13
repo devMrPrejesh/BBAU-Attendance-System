@@ -1,6 +1,5 @@
 <?php
-    session_set_cookie_params(604800, "/");
-	session_start();
+    session_start();
     include ('server/service/StudentService.php');
     
     class StudentController {
@@ -20,7 +19,7 @@
                 $reason = trim($input['reason']);
                 $from_date = trim($input['from']);
                 $to_date = trim($input['to']);
-                $attachment = null;
+                $attachment = NULL;
 
                 if (array_key_exists('uploaded_file', $input)) {
                     $attachment = $input['uploaded_file'];
@@ -28,7 +27,7 @@
 
                 if ($reason != "" && Utils::isDate($from_date) && Utils::isDate($to_date) && date("Y-m-d") <= $from_date && 
                 $from_date <= $to_date && Utils::isNotWeekend($from_date) && Utils::isNotWeekend($to_date) && 
-                ($attachment == null || ($attachment['error'] == 0 && $attachment['size'] <= LeaveAttachment::SIZE && 
+                ($attachment == NULL || ($attachment['error'] == 0 && $attachment['size'] <= LeaveAttachment::SIZE && 
                 in_array($attachment['type'], LeaveAttachment::CONTENT_TYPE)))) {
                     $student_id = trim($_SESSION['user_id']);
                     $student_service = new StudentService();

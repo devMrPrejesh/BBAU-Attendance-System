@@ -1,13 +1,966 @@
 {
 	"info": {
-		"_postman_id": "bf43c440-55bb-41f0-b19d-3d71cbf2f86f",
+		"_postman_id": "219cabc1-4c69-4848-bddb-2b4d4f8a23e0",
 		"name": "BBAU Attendance System",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
+			"name": "Admin",
+			"item": [
+				{
+					"name": "Insert Student",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "action",
+									"value": "insertStudent",
+									"type": "text"
+								},
+								{
+									"key": "id",
+									"value": "26",
+									"type": "text"
+								},
+								{
+									"key": "name",
+									"value": "test",
+									"type": "text"
+								},
+								{
+									"key": "class",
+									"value": "CSE-1A",
+									"type": "text"
+								},
+								{
+									"key": "teacher_id",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "test@gmail.com",
+									"type": "text"
+								}
+							],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}/AdminRouter.php",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"AdminRouter.php"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Insert Teacher",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "action",
+									"value": "insertTeacher",
+									"type": "text"
+								},
+								{
+									"key": "id",
+									"value": "6",
+									"type": "text"
+								},
+								{
+									"key": "name",
+									"value": "test",
+									"type": "text"
+								},
+								{
+									"key": "period_size",
+									"value": "5",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "test@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "class",
+									"value": "CSE-1A",
+									"type": "text",
+									"disabled": true
+								}
+							],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}/AdminRouter.php",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"AdminRouter.php"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Student",
+			"item": [
+				{
+					"name": "Account Details",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "action",
+									"value": "getAccountDetails",
+									"type": "text"
+								}
+							],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}/StudentRouter.php",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"StudentRouter.php"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Apply Leave",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "action",
+									"value": "applyLeave",
+									"type": "text"
+								},
+								{
+									"key": "reason",
+									"value": "random",
+									"type": "text"
+								},
+								{
+									"key": "from",
+									"value": "2021-06-14",
+									"type": "text"
+								},
+								{
+									"key": "to",
+									"value": "2021-06-14",
+									"type": "text"
+								},
+								{
+									"key": "uploaded_file",
+									"type": "file",
+									"src": [],
+									"disabled": true
+								}
+							],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}/StudentRouter.php",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"StudentRouter.php"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Attendance and Timetable",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "action",
+									"value": "getAttendanceAndTimetable",
+									"type": "text"
+								}
+							],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}/StudentRouter.php",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"StudentRouter.php"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Check Status Change",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "action",
+									"value": "updateInLeave",
+									"type": "text"
+								}
+							],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}/StudentRouter.php",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"StudentRouter.php"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Leave",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "action",
+									"value": "getLeave",
+									"type": "text"
+								}
+							],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}/StudentRouter.php",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"StudentRouter.php"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Show Leave Attachment",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{domain}}/FileRouter.php?Role=STUDENT&Leave=3",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"FileRouter.php"
+							],
+							"query": [
+								{
+									"key": "Role",
+									"value": "STUDENT"
+								},
+								{
+									"key": "Leave",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Teacher",
+			"item": [
+				{
+					"name": "Student",
+					"item": [
+						{
+							"name": "Apply Attendance",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "action",
+											"value": "applyAttendance",
+											"type": "text"
+										},
+										{
+											"key": "period",
+											"value": "1",
+											"type": "text"
+										},
+										{
+											"key": "class",
+											"value": "CSE-1A",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "student_1",
+											"value": "on",
+											"type": "text"
+										},
+										{
+											"key": "student_8",
+											"value": "on",
+											"type": "text"
+										},
+										{
+											"key": "student_12",
+											"value": "on",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{domain}}/TeacherRouter.php",
+									"host": [
+										"{{domain}}"
+									],
+									"path": [
+										"TeacherRouter.php"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Check Status Change",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "action",
+											"value": "updateInLeave",
+											"type": "text"
+										}
+									],
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{domain}}/TeacherRouter.php",
+									"host": [
+										"{{domain}}"
+									],
+									"path": [
+										"TeacherRouter.php"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Class Details",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "action",
+											"value": "getClassDetails",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{domain}}/TeacherRouter.php",
+									"host": [
+										"{{domain}}"
+									],
+									"path": [
+										"TeacherRouter.php"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Decide Leave",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "action",
+											"value": "decideLeave",
+											"type": "text"
+										},
+										{
+											"key": "leave_id",
+											"value": "5",
+											"type": "text"
+										},
+										{
+											"key": "value",
+											"value": "REJECTED",
+											"type": "text"
+										},
+										{
+											"key": "remark",
+											"value": "Bad Reason",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{domain}}/TeacherRouter.php",
+									"host": [
+										"{{domain}}"
+									],
+									"path": [
+										"TeacherRouter.php"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Attended Class",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "action",
+											"value": "getAttendedClass",
+											"type": "text"
+										},
+										{
+											"key": "period",
+											"value": "1",
+											"type": "text"
+										},
+										{
+											"key": "class",
+											"value": "CSE-1A",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{domain}}/TeacherRouter.php",
+									"host": [
+										"{{domain}}"
+									],
+									"path": [
+										"TeacherRouter.php"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Period Size",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "action",
+											"value": "getPeriodSize",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{domain}}/TeacherRouter.php",
+									"host": [
+										"{{domain}}"
+									],
+									"path": [
+										"TeacherRouter.php"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Leave",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "action",
+											"value": "getLeave",
+											"type": "text"
+										}
+									],
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{domain}}/TeacherRouter.php",
+									"host": [
+										"{{domain}}"
+									],
+									"path": [
+										"TeacherRouter.php"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Show Leave Attachment",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{domain}}/FileRouter.php?Role=TEACHER&Leave=3",
+									"host": [
+										"{{domain}}"
+									],
+									"path": [
+										"FileRouter.php"
+									],
+									"query": [
+										{
+											"key": "Role",
+											"value": "TEACHER"
+										},
+										{
+											"key": "Leave",
+											"value": "3"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Students Attendance Report",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "action",
+											"value": "getStudentAttendance",
+											"type": "text"
+										},
+										{
+											"key": "student_id",
+											"value": "1",
+											"type": "text"
+										},
+										{
+											"key": "from_date",
+											"value": "2021-03-15",
+											"type": "text"
+										},
+										{
+											"key": "to_date",
+											"value": "2021-04-16",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{domain}}/TeacherRouter.php",
+									"host": [
+										"{{domain}}"
+									],
+									"path": [
+										"TeacherRouter.php"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Students Details",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "action",
+											"value": "getStudentDetails",
+											"type": "text"
+										},
+										{
+											"key": "filterBy",
+											"value": "name",
+											"type": "text"
+										},
+										{
+											"key": "value",
+											"value": "pr",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{domain}}/TeacherRouter.php",
+									"host": [
+										"{{domain}}"
+									],
+									"path": [
+										"TeacherRouter.php"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Account Details",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "action",
+									"value": "getAccountDetails",
+									"type": "text"
+								}
+							],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}/TeacherRouter.php",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"TeacherRouter.php"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Attendance and Timetable",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "action",
+									"value": "getAttendanceAndTimetable",
+									"type": "text"
+								}
+							],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}/TeacherRouter.php",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"TeacherRouter.php"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "User",
 			"item": [
+				{
+					"name": "Change Email ID",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "action",
+									"value": "changeEmail",
+									"type": "text"
+								},
+								{
+									"key": "new_email",
+									"value": "aman@gmail.com",
+									"type": "text"
+								}
+							],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}/UserRouter.php",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"UserRouter.php"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Change Password",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "action",
+									"value": "changePassword",
+									"type": "text"
+								},
+								{
+									"key": "old_password",
+									"value": "student",
+									"type": "text"
+								},
+								{
+									"key": "new_password",
+									"value": "Preje$h123",
+									"type": "text"
+								}
+							],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}/UserRouter.php",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"UserRouter.php"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Change Profile Photo",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "action",
+									"value": "changeProfilePhoto",
+									"type": "text"
+								},
+								{
+									"key": "profile_photo",
+									"type": "file",
+									"src": []
+								}
+							],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}/UserRouter.php",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"UserRouter.php"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Holidays",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "action",
+									"value": "getHoliday",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{domain}}/UserRouter.php",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"UserRouter.php"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login [Admin]",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "action",
+									"value": "login",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "aman@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "admin",
+									"type": "text"
+								},
+								{
+									"key": "role",
+									"value": "ADMIN",
+									"type": "text"
+								}
+							],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{domain}}/UserRouter.php",
+							"host": [
+								"{{domain}}"
+							],
+							"path": [
+								"UserRouter.php"
+							]
+						}
+					},
+					"response": []
+				},
 				{
 					"name": "Login [Student]",
 					"request": {
@@ -158,33 +1111,6 @@
 					"response": []
 				},
 				{
-					"name": "Holidays",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "action",
-									"value": "getHoliday",
-									"type": "text"
-								}
-							]
-						},
-						"url": {
-							"raw": "{{domain}}/UserRouter.php",
-							"host": [
-								"{{domain}}"
-							],
-							"path": [
-								"UserRouter.php"
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "Reset Password",
 					"request": {
 						"method": "POST",
@@ -220,627 +1146,8 @@
 						}
 					},
 					"response": []
-				},
-				{
-					"name": "Change Password",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "action",
-									"value": "changePassword",
-									"type": "text"
-								},
-								{
-									"key": "old_password",
-									"value": "student",
-									"type": "text"
-								},
-								{
-									"key": "new_password",
-									"value": "Preje$h123",
-									"type": "text"
-								}
-							],
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{domain}}/UserRouter.php",
-							"host": [
-								"{{domain}}"
-							],
-							"path": [
-								"UserRouter.php"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Change Email ID",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "action",
-									"value": "changeEmail",
-									"type": "text"
-								},
-								{
-									"key": "new_email",
-									"value": "aman@gmail.com",
-									"type": "text"
-								}
-							],
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{domain}}/UserRouter.php",
-							"host": [
-								"{{domain}}"
-							],
-							"path": [
-								"UserRouter.php"
-							]
-						}
-					},
-					"response": []
 				}
 			]
-		},
-		{
-			"name": "Student",
-			"item": [
-				{
-					"name": "Attendance and Timetable",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "action",
-									"value": "getAttendanceAndTimetable",
-									"type": "text"
-								}
-							],
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{domain}}/StudentRouter.php",
-							"host": [
-								"{{domain}}"
-							],
-							"path": [
-								"StudentRouter.php"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Apply Leave",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "action",
-									"value": "applyLeave",
-									"type": "text"
-								},
-								{
-									"key": "reason",
-									"value": "random",
-									"type": "text"
-								},
-								{
-									"key": "from",
-									"value": "2021-05-27",
-									"type": "text"
-								},
-								{
-									"key": "to",
-									"value": "2021-05-28",
-									"type": "text"
-								},
-								{
-									"key": "uploaded_file",
-									"type": "file",
-									"src": "/C:/Users/Aman Singh/Documents/attendance_system_files/a.pdf"
-								}
-							],
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{domain}}/StudentRouter.php",
-							"host": [
-								"{{domain}}"
-							],
-							"path": [
-								"StudentRouter.php"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Leave",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "action",
-									"value": "getLeave",
-									"type": "text"
-								}
-							],
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{domain}}/StudentRouter.php",
-							"host": [
-								"{{domain}}"
-							],
-							"path": [
-								"StudentRouter.php"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Show Leave Attachment",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{domain}}/FileRouter.php?Role=STUDENT&Leave=3",
-							"host": [
-								"{{domain}}"
-							],
-							"path": [
-								"FileRouter.php"
-							],
-							"query": [
-								{
-									"key": "Role",
-									"value": "STUDENT"
-								},
-								{
-									"key": "Leave",
-									"value": "3"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Check Status Change",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "action",
-									"value": "updateInLeave",
-									"type": "text"
-								}
-							],
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{domain}}/StudentRouter.php",
-							"host": [
-								"{{domain}}"
-							],
-							"path": [
-								"StudentRouter.php"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Acoount Details",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "action",
-									"value": "getAccountDetails",
-									"type": "text"
-								}
-							],
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{domain}}/StudentRouter.php",
-							"host": [
-								"{{domain}}"
-							],
-							"path": [
-								"StudentRouter.php"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "Teacher",
-			"item": [
-				{
-					"name": "Student",
-					"item": [
-						{
-							"name": "Apply Attendance",
-							"request": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "formdata",
-									"formdata": [
-										{
-											"key": "action",
-											"value": "applyAttendance",
-											"type": "text"
-										},
-										{
-											"key": "period",
-											"value": "1",
-											"type": "text"
-										},
-										{
-											"key": "class",
-											"value": "CSE-1A",
-											"type": "text",
-											"disabled": true
-										},
-										{
-											"key": "student_1",
-											"value": "on",
-											"type": "text"
-										},
-										{
-											"key": "student_8",
-											"value": "on",
-											"type": "text"
-										},
-										{
-											"key": "student_12",
-											"value": "on",
-											"type": "text"
-										}
-									]
-								},
-								"url": {
-									"raw": "{{domain}}/TeacherRouter.php",
-									"host": [
-										"{{domain}}"
-									],
-									"path": [
-										"TeacherRouter.php"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Class Details",
-							"request": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "formdata",
-									"formdata": [
-										{
-											"key": "action",
-											"value": "getClassDetails",
-											"type": "text"
-										}
-									]
-								},
-								"url": {
-									"raw": "{{domain}}/TeacherRouter.php",
-									"host": [
-										"{{domain}}"
-									],
-									"path": [
-										"TeacherRouter.php"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Get Attended Class",
-							"request": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "formdata",
-									"formdata": [
-										{
-											"key": "action",
-											"value": "getAttendedClass",
-											"type": "text"
-										},
-										{
-											"key": "period",
-											"value": "1",
-											"type": "text"
-										},
-										{
-											"key": "class",
-											"value": "CSE-1A",
-											"type": "text"
-										}
-									]
-								},
-								"url": {
-									"raw": "{{domain}}/TeacherRouter.php",
-									"host": [
-										"{{domain}}"
-									],
-									"path": [
-										"TeacherRouter.php"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Get Period Size",
-							"request": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "formdata",
-									"formdata": [
-										{
-											"key": "action",
-											"value": "getPeriodSize",
-											"type": "text"
-										}
-									]
-								},
-								"url": {
-									"raw": "{{domain}}/TeacherRouter.php",
-									"host": [
-										"{{domain}}"
-									],
-									"path": [
-										"TeacherRouter.php"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Show Leave Attachment",
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{domain}}/FileRouter.php?Role=TEACHER&Leave=3",
-									"host": [
-										"{{domain}}"
-									],
-									"path": [
-										"FileRouter.php"
-									],
-									"query": [
-										{
-											"key": "Role",
-											"value": "TEACHER"
-										},
-										{
-											"key": "Leave",
-											"value": "3"
-										}
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Students Attendance Report",
-							"request": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "formdata",
-									"formdata": [
-										{
-											"key": "action",
-											"value": "getStudentAttendance",
-											"type": "text"
-										},
-										{
-											"key": "student_id",
-											"value": "1",
-											"type": "text"
-										},
-										{
-											"key": "from_date",
-											"value": "2021-03-15",
-											"type": "text"
-										},
-										{
-											"key": "to_date",
-											"value": "2021-04-16",
-											"type": "text"
-										}
-									]
-								},
-								"url": {
-									"raw": "{{domain}}/TeacherRouter.php",
-									"host": [
-										"{{domain}}"
-									],
-									"path": [
-										"TeacherRouter.php"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Students Details",
-							"request": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "formdata",
-									"formdata": [
-										{
-											"key": "action",
-											"value": "getStudentDetails",
-											"type": "text"
-										},
-										{
-											"key": "filterBy",
-											"value": "name",
-											"type": "text"
-										},
-										{
-											"key": "value",
-											"value": "pr",
-											"type": "text"
-										}
-									]
-								},
-								"url": {
-									"raw": "{{domain}}/TeacherRouter.php",
-									"host": [
-										"{{domain}}"
-									],
-									"path": [
-										"TeacherRouter.php"
-									]
-								}
-							},
-							"response": []
-						}
-					]
-				},
-				{
-					"name": "Acoount Details",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "action",
-									"value": "getAccountDetails",
-									"type": "text"
-								}
-							],
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{domain}}/TeacherRouter.php",
-							"host": [
-								"{{domain}}"
-							],
-							"path": [
-								"TeacherRouter.php"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Attendance and Timetable",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "action",
-									"value": "getAttendanceAndTimetable",
-									"type": "text"
-								}
-							],
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{domain}}/TeacherRouter.php",
-							"host": [
-								"{{domain}}"
-							],
-							"path": [
-								"TeacherRouter.php"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "Admin",
-			"item": []
 		}
 	],
 	"event": [
@@ -866,7 +1173,7 @@
 	"variable": [
 		{
 			"key": "domain",
-			"value": "http://localhost/bbau"
+			"value": "http://localhost/attendance"
 		}
 	]
 }

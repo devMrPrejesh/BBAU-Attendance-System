@@ -1,6 +1,5 @@
 <?php
-    session_set_cookie_params(604800, "/");
-	session_start();
+    session_start();
     include ('server/service/UserService.php');
     
     class UserController {
@@ -58,6 +57,8 @@
                 throw new ResponseException(ExceptionMSG::AUTHENTICATION_REQUIRED, 401);
             }
         }
+
+        public function changeProfilePhoto(array $input): ResponseEntity {}
 
         public function getHoliday(array $input): ResponseEntity {
             if (array_key_exists('role', $_SESSION) && UserRole::isValid(trim($_SESSION['role']))) {

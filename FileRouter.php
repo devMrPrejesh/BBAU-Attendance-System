@@ -5,7 +5,7 @@
 
     if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         try {
-            $result = null;
+            $result = NULL;
             if (array_key_exists('UserProfile', $_GET)) {
                 include ('server/controller/UserController.php');
                 $user_controller = new UserController();

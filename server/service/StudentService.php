@@ -2,13 +2,15 @@
     include ('server/repository/StudentRepository.php');
     include ('server/repository/TeacherRepository.php');
     include ('server/repository/LeaveRepository.php');
+    include ('server/repository/HolidayRepository.php');
     
     class StudentService {
 
-        public function applyLeave(int $student_id, string $reason, string $from_date, string $to_date, ?array $uploaded_file): array {
+        public function applyLeave(int $student_id, string $reason, string $from_date, string $to_date, array $uploaded_file=NULL): array {
             $student_repository = new StudentRepository();
             $leave_repository = new LeaveRepository();
             $teacher_repository = new TeacherRepository();
+            $holiday_repository = new HolidayRepository();
 
             if (!$leave_repository->checkDuration($student_id, $from_date, $to_date) || $holiday_repository->existById($from_date) || 
             $holiday_repository->existById($to_date)) {
@@ -16,17 +18,17 @@
                 throw new ResponseException($message, 406);
             }
 
-            $attachment_path = null;
+            $attachment_path = NULL;
             $teacher_id = $student_repository->findById($student_id)['teacher_id'];
 
-            if ($uploaded_file != null) {
+            if ($uploaded_file != NULL) {
                 $attachment_path = Utils::addUploadedFile($uploaded_file['name'], $uploaded_file['tmp_name']);
             }
             
             $leave_id = $leave_repository->save($teacher_id, $student_id, $reason, $from_date, $to_date, $attachment_path);
             
             if ($leave_id === -1) {
-                if ($uploaded_file != null) { unlink(LeaveAttachment::PATH.$attachment_path); }
+                if ($uploaded_file != NULL) { unlink(LeaveAttachment::PATH.$attachment_path); }
                 throw new ResponseException(ExceptionMSG::LEAVE_FAILURE, 501);
             }
             else {
@@ -78,7 +80,7 @@
                 unset($leave['teacher_id']);
                 unset($leave['student_id']);
                 unset($leave['status_change']);
-                if ($leave['attachment_path'] != null) {
+                if ($leave['attachment_path'] != NULL) {
                     $leave['attachment_flag'] = TRUE;
                 }
                 else {
@@ -95,7 +97,7 @@
             $leave_repository = new LeaveRepository();
             $attachment_path = $leave_repository->findAttachmentPathByIdAndStudentId($leave_id, $student_id);
             
-            if ($attachment_path != null) {
+            if ($attachment_path != NULL) {
                 return UserProfile::PATH.$attachment_path;
             }
             else {

@@ -16,7 +16,7 @@
                 return $this->convertDBRecordstoArray($result)[0];
             }
             else {
-                return null;
+                return NULL;
             }
         }
         
@@ -27,7 +27,7 @@
                 return $this->convertDBRecordstoArray($result)[0];
             }
             else {
-                return null;
+                return NULL;
             }
         }
 
@@ -38,7 +38,7 @@
                 return $this->convertDBRecordstoArray($result)[0];
             }
             else {
-                return null;
+                return NULL;
             }
         }
         
@@ -52,6 +52,17 @@
             $query = "SELECT DISTINCT subject, class FROM classroom WHERE teacher_id='$teacher_id'";
             $result = mysqli_query($this->conn, $query);
             return $this->convertDBRecordstoArray($result);
+        }
+
+        public function save(int $teacher_id, $name, $period_size, $class): void {
+            $query = "INSERT INTO teacher VALUES ('$teacher_id', '$name', '$period_size', ";
+            if ($class ==NULL) {
+                $query .= "NULL)";
+            }
+            else {
+                $query .= "'$class')";
+            }
+            mysqli_query($this->conn, $query);
         }
 
         public function saveAttendance(int $teacher_id, string $status, string $date, int $period): bool {

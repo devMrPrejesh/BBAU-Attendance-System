@@ -32,7 +32,7 @@
                 return mysqli_fetch_assoc($result)['email'];
             }
             else {
-                return null;
+                return NULL;
             }
         }
 
@@ -43,7 +43,7 @@
                 return mysqli_fetch_assoc($result)['profile_photo'];
             }
             else {
-                return null;
+                return NULL;
             }
         }
         
@@ -54,8 +54,13 @@
                 return $this->convertDBRecordstoArray($result)[0];
             }
             else {
-                return null;
+                return NULL;
             }
+        }
+
+        public function save(string $email, $password, $role, $user_id, $first_name): void {
+            $query = "INSERT INTO user VALUES ('$email', '$password', '$role', '$user_id', '$first_name', NULL)";
+            mysqli_query($this->conn, $query);
         }
 
         public function updateIdById(string $email, string $new_email): void {

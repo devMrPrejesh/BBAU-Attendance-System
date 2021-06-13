@@ -3,15 +3,34 @@
 
     class StudentRepository extends DBConnector {
 
+        public function checkNewStudent(int $student_id, string $class): int {
+            $query0 = "SELECT student_id from student WHERE student_id='$student_id'";
+            $result = mysqli_query($this->conn, $query0);
+            if (mysqli_num_rows($result) != 0) {
+                $message = Utils::constructMSG(ExceptionMSG::USER_EXIST, "Student", $student_id);
+                throw new ResponseException($message, 400);
+            }
+
+            $query1 = "SELECT period from classroom WHERE class='$class' AND day=0";
+            $result = mysqli_query($this->conn, $query1);
+            if (mysqli_num_rows($result) == 0) {
+                $message = Utils::constructMSG(ExceptionMSG::INVALID_DATA, "Class");
+                throw new ResponseException($message, 400);
+            }
+            else {
+                return mysqli_num_rows($result);
+            }
+        }
+
         public function findAttendanceByIdAndSubjectOrderByDateAndPeriod(int $student_id, int $teacher_id, string $class, string $from_date, string $to_date): array {
             $query = "SELECT sa.status, sa.date FROM student_attendance AS sa, classroom as c WHERE sa.student_id = '$student_id' AND c.teacher_id = '$teacher_id' AND c.class = '$class' AND DAYOFWEEK(sa.date)-2 = c.day AND sa.period = c.period AND sa.date BETWEEN '$from_date' AND '$to_date' ORDER BY sa.date, sa.period";
             $result = mysqli_query($this->conn, $query);
             return $this->convertDBRecordstoArray($result);
         }
 
-        public function findAttendanceByIdOrderByDateAndPeriod(int $student_id, string $from_date=null, string $to_date=null): array {
+        public function findAttendanceByIdOrderByDateAndPeriod(int $student_id, string $from_date=NULL, string $to_date=NULL): array {
             $query = "SELECT * FROM student_attendance WHERE student_id = '$student_id' ";
-            if ($from_date != null and $to_date) {
+            if ($from_date != NULL and $to_date) {
                 $query .= "AND date BETWEEN '$from_date' AND '$to_date' ";
             }
             $query .= "ORDER BY date, period";
@@ -38,7 +57,7 @@
                 return $this->convertDBRecordstoArray($result)[0];
             }
             else {
-                return null;
+                return NULL;
             }
         }
 
@@ -49,7 +68,7 @@
                 return $this->convertDBRecordstoArray($result);
             }
             else {
-                return null;
+                return NULL;
             }
         }
 
@@ -78,8 +97,13 @@
                 return mysqli_fetch_assoc($result)['subject'];
             }
             else {
-                return null;
+                return NULL;
             }
+        }
+
+        public function save(int $student_id, $name, $class, $period_size, $teacher_id): void {
+            $query = "INSERT INTO student VALUES ('$student_id', '$name', '$class', '$period_size', '$teacher_id')";
+            mysqli_query($this->conn, $query);
         }
 
         public function saveAttendance(int $student_id, string $status, string $date, int $period): bool {

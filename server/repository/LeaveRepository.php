@@ -25,7 +25,7 @@
         }
 
         public function checkDuration(int $student_id, string $from_date, string $to_date): bool {
-            $query = "SELECT leave_id FROM leave_system WHERE student_id = '$student_id' AND NOT ((from_date > '$from_date' AND from_date > '$to_date') OR (to_date < '$from_date' AND to_date < '$to_date'))";
+            $query = "SELECT leave_id FROM leave_system WHERE student_id = '$student_id' AND status != 'REJECTED' AND NOT ((from_date > '$from_date' AND from_date > '$to_date') OR (to_date < '$from_date' AND to_date < '$to_date'))";
             $result = mysqli_query($this->conn, $query);
             if (mysqli_num_rows($result) > 0) {
                 return FALSE;
@@ -35,8 +35,14 @@
             }
         }
 
-        public function checkStatusChange(int $student_id): bool {
-            $query = "SELECT leave_id FROM leave_system WHERE student_id = '$student_id' AND status_change = '-1'";
+        public function checkStatusChange(int $user_id, bool $student_flag=TRUE): bool {
+            $query = NULL;
+            if ($student_flag) {
+                $query = "SELECT leave_id FROM leave_system WHERE student_id = '$user_id' AND status_change = '-1'";
+            }
+            else {
+                $query = "SELECT leave_id FROM leave_system WHERE teacher_id = '$user_id' AND status_change = '1'";
+            }
             $result = mysqli_query($this->conn, $query);
             if (mysqli_num_rows($result) > 0) {
                 return TRUE;
@@ -53,7 +59,7 @@
                 return mysqli_fetch_assoc($result)['attachment_path'];
             }
             else {
-                return null;
+                return NULL;
             }
         }
 
@@ -64,7 +70,18 @@
                 return mysqli_fetch_assoc($result)['attachment_path'];
             }
             else {
-                return null;
+                return NULL;
+            }
+        }
+
+        public function findById(int $leave_id): ?array {
+            $query = "SELECT * FROM leave_system WHERE leave_id = '$leave_id'";
+            $result = mysqli_query($this->conn, $query);
+            if (mysqli_num_rows($result) == 1) {
+                return $this->convertDBRecordstoArray($result)[0];
+            }
+            else {
+                return NULL;
             }
         }
         
@@ -76,8 +93,22 @@
             return $this->convertDBRecordstoArray($result);
         }
 
-        public function save(int $teacher_id, int $student_id, string $reason, string $from_date, string $to_date, ?string $attachment_path): int {
-            $query = "INSERT INTO leave_system(teacher_id, student_id, reason, from_date, to_date, attachment_path) VALUES ('$teacher_id', '$student_id', '$reason', '$from_date', '$to_date', '$attachment_path')";
+        public function findByTeacherId(int $teacher_id): array {
+            $query0 = "UPDATE leave_system SET status = 'READ', status_change = 0 WHERE teacher_id = '$teacher_id' AND status_change = 1";
+            mysqli_query($this->conn, $query0);
+            $query1 = "SELECT * FROM leave_system WHERE teacher_id='$teacher_id' ORDER BY from_date, to_date";
+            $result = mysqli_query($this->conn, $query1);
+            return $this->convertDBRecordstoArray($result);
+        }
+
+        public function save(int $teacher_id, int $student_id, string $reason, string $from_date, string $to_date, string $attachment_path=NULL): int {
+            $query = "INSERT INTO leave_system(teacher_id, student_id, reason, from_date, to_date, attachment_path) VALUES ('$teacher_id', '$student_id', '$reason', '$from_date', '$to_date', ";
+            if  ($attachment_path != NULL) {
+                $query .= "'$attachment_path')";
+            }
+            else {
+                $query .= "NULL)";
+            }
             if (mysqli_query($this->conn, $query)) {
                 return $this->createEvent($from_date);
             }
@@ -85,6 +116,13 @@
                 return -1;
             }
         }
+
+        public function updateLeaveById(int $leave_id, string $value, string $remark): void {
+            $query = "UPDATE leave_system SET status = '$value', status_change = -1, remarks = '$remark' WHERE leave_id = '$leave_id'";
+            mysqli_query($this->conn, $query);
+            mysqli_query($this->conn, "CALL approveLeave($leave_id);");
+        }
+
     }
 ?>
 

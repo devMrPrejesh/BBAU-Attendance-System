@@ -7,7 +7,7 @@
         
         protected $conn;
 
-        function __construct(bool $config_flag=FALSE, array $args=null) {
+        function __construct(bool $config_flag=FALSE, array $args=NULL) {
             if ($config_flag) {
                 $this->setConfig($args);
             }

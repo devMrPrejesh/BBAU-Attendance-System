@@ -33,7 +33,7 @@
             $user_repository = new UserRepository();
             $result = $user_repository->findProfilePhotoByID($email);
             
-            if ($result != null) {
+            if ($result != NULL) {
                 return UserProfile::PATH.$result;
             }
             else {
@@ -45,7 +45,7 @@
             $user_repository = new UserRepository();
             $result = $user_repository->findUserIdAndFirstNameByIdAndPasswordandRole($email, $password, $role);
             
-            if ($result != null) {
+            if ($result != NULL) {
                 return $result;
             }
             else {
@@ -64,7 +64,7 @@
                     "{redirect_link}" => RedirectUrl::DOMAIN.RedirectUrl::RESET_PASSWORD
                 );
                 
-				if (!Utils::sendMail($_POST['email'], "Reset Password", MailTemplate::RESET_PASSWORD, TRUE, $substitute)) {
+				if (!Utils::sendMail($email, "Reset Password", MailTemplate::RESET_PASSWORD, TRUE, $substitute)) {
                     throw new ResponseException(ExceptionMSG::MAIL_FAILURE, 501);
                 }
 			}

@@ -1,6 +1,5 @@
 <?php
-    session_set_cookie_params(604800, "/");
-	session_start();
+    session_start();
     include ('server/service/TeacherService.php');
     
     class TeacherController {
@@ -21,7 +20,7 @@
             if (array_key_exists("period", $input)) {
                 $period = trim($input['period']);
                 unset($input['period']);
-                $class = null;
+                $class = NULL;
                 
                 if ($period != "") {
                     if (array_key_exists("class", $input)) {
@@ -46,21 +45,24 @@
 
         public function decideLeave(array $input): ResponseEntity {
             $this->authenticate();
-            if (array_key_exists("leave_id", $input) && array_key_exists("value", $input)) {
+            if (array_key_exists("leave_id", $input) && array_key_exists("value", $input) && array_key_exists("remark", $input)) {
                 $leave_id = trim($input['leave_id']);
                 $value = trim($input['value']);
+                $remark = trim($input['remark']);
                 
-                if (ctype_digit($leave_id) && is_bool($value)) {
+                if (ctype_digit($leave_id) && in_array($value, LeaveDecide::FINAL_STATUS) && $remark != "") {
                     $teacher_service = new TeacherService();
-                    $teacher_service->decideLeave($leave_id, $value);
+                    $teacher_service->decideLeave($leave_id, $value, $remark);
+                    $meesage = Utils::constructMSG(ResponseMSG::LEAVE_DECIDE, strtolower($value));
+                    return new ResponseEntity($meesage);
                 }
                 else {
-                    $message = Utils::constructMSG(ExceptionMSG::INVALID_DATA, "Leave ID or Value");
+                    $message = Utils::constructMSG(ExceptionMSG::INVALID_DATA, "Leave ID, Remark or Value");
                     throw new ResponseException($message, 406);
                 }
             }
             else {
-                $message = Utils::constructMSG(ExceptionMSG::INCOMPLETE_DATA, "Leave ID or Value");
+                $message = Utils::constructMSG(ExceptionMSG::INCOMPLETE_DATA, "Leave ID, Remark or Value");
                 throw new ResponseException($message, 406);
             }
         }
@@ -88,7 +90,7 @@
             
             if (array_key_exists("period", $input)) {
                 $period = trim($input['period']);
-                $class = null;
+                $class = NULL;
 
                 if ($period != "") {
                     if (array_key_exists("class", $input) && trim($input['class']) != "") { $class = trim($input['class']); }
@@ -113,6 +115,14 @@
             $teacher_id = trim($_SESSION['user_id']);
             $teacher_service = new TeacherService();
             $result = $teacher_service->getClassDetails($teacher_id);
+            return new ResponseEntity(json_encode($result));
+        }
+
+        public function getLeave(array $input): ResponseEntity {
+            $this->authenticate();
+            $teacher_id = trim($_SESSION['user_id']);
+            $teacher_service = new TeacherService();
+            $result = $teacher_service->getLeave($teacher_id);
             return new ResponseEntity(json_encode($result));
         }
 
@@ -183,6 +193,14 @@
                 $message = Utils::constructMSG(ExceptionMSG::INCOMPLETE_DATA, "Filter By or Value");
                     throw new ResponseException($message, 406);
             }
+        }
+
+        public function updateInLeave(array $input): ResponseEntity {
+            $this->authenticate();
+            $teacher_id = trim($_SESSION['user_id']);
+            $teacher_service = new TeacherService();
+            $result = $teacher_service->updateInLeave($teacher_id);
+            return new ResponseEntity(json_encode($result));
         }
 
     }
